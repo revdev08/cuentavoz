@@ -1,0 +1,82 @@
+<svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glowFondo" cx="50%" cy="35%" r="75%">
+      <stop offset="0%" stop-color="#362A57"/>
+      <stop offset="60%" stop-color="#1C1730"/>
+      <stop offset="100%" stop-color="#120E1C"/>
+    </radialGradient>
+    <linearGradient id="brilloCentral" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EFC873" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#EFC873" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="500" fill="url(#glowFondo)"/>
+  <ellipse cx="500" cy="120" rx="420" ry="220" fill="url(#brilloCentral)"/>
+
+  <!-- estrellas -->
+  <g fill="#FCF6EA" opacity="0.8">
+    <circle cx="90" cy="70" r="2"/>
+    <circle cx="180" cy="40" r="1.6"/>
+    <circle cx="260" cy="90" r="2.2"/>
+    <circle cx="740" cy="55" r="2"/>
+    <circle cx="830" cy="90" r="1.8"/>
+    <circle cx="900" cy="50" r="2.4"/>
+    <circle cx="420" cy="30" r="1.6"/>
+    <circle cx="600" cy="45" r="2"/>
+  </g>
+
+  <!-- estantería, silueta de lomos -->
+  <rect x="0" y="380" width="1000" height="14" fill="#4B3C74"/>
+  <g>
+    <rect x="40" y="300" width="34" height="80" rx="4" fill="#D4A24C"/>
+    <rect x="80" y="315" width="30" height="65" rx="4" fill="#2EB894"/>
+    <rect x="116" y="290" width="32" height="90" rx="4" fill="#6A4C8C"/>
+    <rect x="154" y="325" width="28" height="55" rx="4" fill="#9C6F22"/>
+    <rect x="188" y="305" width="30" height="75" rx="4" fill="#1D7A63"/>
+
+    <rect x="800" y="310" width="30" height="70" rx="4" fill="#8A6BAE"/>
+    <rect x="834" y="295" width="32" height="85" rx="4" fill="#D4A24C"/>
+    <rect x="870" y="320" width="28" height="60" rx="4" fill="#2EB894"/>
+    <rect x="902" y="300" width="34" height="80" rx="4" fill="#6A4C8C"/>
+    <rect x="940" y="330" width="26" height="50" rx="4" fill="#EFC873"/>
+  </g>
+
+  <!-- libro abierto grande, centro, brillando -->
+  <g transform="translate(500,300)">
+    <path d="M-170 40 C -90 10, -20 20, 0 55 C 20 20, 90 10, 170 40 L 170 90 C 90 62, 20 70, 0 100 C -20 70, -90 62, -170 90 Z" fill="#F4E8D2"/>
+    <path d="M-160 45 C -90 20, -25 28, -5 58 L -5 92 C -25 66, -90 58, -160 82 Z" fill="#FCF6EA"/>
+    <path d="M160 45 C 90 20, 25 28, 5 58 L 5 92 C 25 66, 90 58, 160 82 Z" fill="#FCF6EA"/>
+    <path d="M-6 55 C -2 40, 2 40, 6 55" stroke="#9C6F22" stroke-width="3" fill="none"/>
+    <g stroke="#D4A24C" stroke-width="1.4" opacity="0.5">
+      <path d="M-140 55 C -95 40, -50 42, -20 58"/>
+      <path d="M-135 68 C -92 55, -50 56, -18 70"/>
+      <path d="M140 55 C 95 40, 50 42, 20 58"/>
+      <path d="M135 68 C 92 55, 50 56, 18 70"/>
+    </g>
+  </g>
+
+  <!-- destellos saliendo del libro -->
+  <g fill="#8FE3CB">
+    <path d="M500 210 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6 Z"/>
+  </g>
+  <g fill="#EFC873">
+    <path d="M420 240 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 Z"/>
+    <path d="M600 235 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 Z"/>
+    <circle cx="450" cy="190" r="3.5"/>
+    <circle cx="560" cy="185" r="3"/>
+    <circle cx="500" cy="160" r="4"/>
+  </g>
+
+  <!-- dos libritos volando a los lados -->
+  <g transform="translate(230,180) rotate(-8)">
+    <path d="M40 0 C 20 -10, 0 -6, -4 12 C 0 26, 20 24, 40 16 Z" fill="#D4A24C"/>
+    <path d="M40 0 C 60 -10, 80 -6, 84 12 C 80 26, 60 24, 40 16 Z" fill="#EFC873"/>
+    <rect x="37" y="-3" width="6" height="20" rx="2" fill="#9C6F22"/>
+  </g>
+  <g transform="translate(760,210) rotate(10) scale(0.85)">
+    <path d="M40 0 C 20 -10, 0 -6, -4 12 C 0 26, 20 24, 40 16 Z" fill="#2EB894"/>
+    <path d="M40 0 C 60 -10, 80 -6, 84 12 C 80 26, 60 24, 40 16 Z" fill="#8FE3CB"/>
+    <rect x="37" y="-3" width="6" height="20" rx="2" fill="#1D7A63"/>
+  </g>
+</svg>

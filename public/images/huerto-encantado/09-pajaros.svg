@@ -1,0 +1,26 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#FCF6EA"/>
+  <circle cx="90" cy="70" r="46" fill="#F4E8D2"/>
+  <path d="M0 200 C120 200, 130 160, 220 165 C300 168, 320 200, 400 200" fill="none" stroke="#9C6F22" stroke-width="8" stroke-linecap="round"/>
+  <g fill="#8A6BAE">
+    <circle cx="130" cy="190" r="10"/>
+    <circle cx="200" cy="180" r="10"/>
+    <circle cx="270" cy="192" r="10"/>
+  </g>
+  <g transform="translate(120,150)">
+    <ellipse cx="0" cy="0" rx="15" ry="11" fill="#D4A24C"/>
+    <circle cx="11" cy="-6" r="7" fill="#D4A24C"/>
+    <path d="M0 -2 Q9 -12 18 -5 Q9 -7 4 2 Z" fill="#EFC873"/>
+    <circle cx="14" cy="-8" r="1.5" fill="#1C1730"/>
+  </g>
+  <g transform="translate(230,140) scale(1.1)">
+    <ellipse cx="0" cy="0" rx="15" ry="11" fill="#2EB894"/>
+    <circle cx="-11" cy="-6" r="7" fill="#2EB894"/>
+    <path d="M0 -2 Q-9 -12 -18 -5 Q-9 -7 -4 2 Z" fill="#8FE3CB"/>
+    <circle cx="-14" cy="-8" r="1.5" fill="#1C1730"/>
+  </g>
+  <g fill="#D4A24C" opacity="0.8">
+    <text x="150" y="80" font-size="24" font-family="sans-serif">♪</text>
+    <text x="185" y="60" font-size="18" font-family="sans-serif">♫</text>
+  </g>
+</svg>

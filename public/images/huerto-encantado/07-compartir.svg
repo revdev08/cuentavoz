@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glow7" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#F4E8D2"/>
+      <stop offset="100%" stop-color="#FCF6EA"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#glow7)"/>
+  <path d="M150 130 Q200 100 200 160 Q200 100 250 130 Q250 190 200 220 Q150 190 150 130 Z" fill="none"/>
+  <path d="M160 140 Q200 115 200 165 L195 220 L160 195 Z" fill="#D4A24C"/>
+  <path d="M240 140 Q200 115 200 165 L205 220 L240 195 Z" fill="#EFC873"/>
+  <path d="M197 118 Q200 108 208 108" stroke="#2EB894" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <g transform="translate(90,235)">
+    <ellipse cx="0" cy="0" rx="30" ry="14" fill="#8A6BAE"/>
+    <path d="M25 -5 L60 -25" stroke="#8A6BAE" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(310,235)">
+    <ellipse cx="0" cy="0" rx="26" ry="16" fill="#D4A24C"/>
+    <path d="M-25 -5 L-58 -22" stroke="#D4A24C" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <g fill="#EFC873" opacity="0.9">
+    <path d="M200 60 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 Z"/>
+  </g>
+</svg>

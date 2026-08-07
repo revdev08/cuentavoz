@@ -1,0 +1,30 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#FCF6EA"/>
+  <g fill="#8A6BAE">
+    <circle cx="100" cy="230" r="60"/>
+    <circle cx="300" cy="220" r="70"/>
+  </g>
+  <g fill="#EFC873">
+    <circle cx="100" cy="200" r="24"/>
+    <circle cx="300" cy="185" r="28"/>
+    <circle cx="200" cy="240" r="20"/>
+  </g>
+  <g>
+    <polygon points="360,90 380,105 375,125 345,125 340,105" fill="#D4A24C" opacity="0.9"/>
+    <polygon points="345,105 340,80 320,90 322,110" fill="#D4A24C" opacity="0.6"/>
+  </g>
+  <g transform="translate(150,110)">
+    <ellipse cx="0" cy="0" rx="14" ry="9" fill="#1C1730"/>
+    <rect x="-6" y="-9" width="12" height="4" fill="#EFC873"/>
+    <rect x="-6" y="0" width="12" height="4" fill="#EFC873"/>
+    <ellipse cx="-8" cy="-8" rx="10" ry="6" fill="#FCF6EA" opacity="0.6" transform="rotate(-20 -8 -8)"/>
+    <ellipse cx="8" cy="-8" rx="10" ry="6" fill="#FCF6EA" opacity="0.6" transform="rotate(20 8 -8)"/>
+  </g>
+  <g transform="translate(220,70) scale(0.8)">
+    <ellipse cx="0" cy="0" rx="14" ry="9" fill="#1C1730"/>
+    <rect x="-6" y="-9" width="12" height="4" fill="#EFC873"/>
+    <rect x="-6" y="0" width="12" height="4" fill="#EFC873"/>
+    <ellipse cx="-8" cy="-8" rx="10" ry="6" fill="#FCF6EA" opacity="0.6" transform="rotate(-20 -8 -8)"/>
+    <ellipse cx="8" cy="-8" rx="10" ry="6" fill="#FCF6EA" opacity="0.6" transform="rotate(20 8 -8)"/>
+  </g>
+</svg>

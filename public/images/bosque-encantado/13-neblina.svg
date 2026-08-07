@@ -1,0 +1,27 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#D8D3C6"/>
+  <g fill="#7A4A18" opacity="0.35">
+    <rect x="40" y="120" width="14" height="150"/>
+    <rect x="150" y="100" width="16" height="170"/>
+    <rect x="260" y="130" width="14" height="140"/>
+    <rect x="340" y="110" width="16" height="160"/>
+  </g>
+  <g fill="#C4BEAF" opacity="0.85">
+    <ellipse cx="80" cy="180" rx="90" ry="34"/>
+    <ellipse cx="240" cy="200" rx="110" ry="38"/>
+    <ellipse cx="360" cy="170" rx="80" ry="30"/>
+  </g>
+  <g fill="#E6E1D5" opacity="0.9">
+    <ellipse cx="140" cy="220" rx="100" ry="30"/>
+    <ellipse cx="320" cy="230" rx="90" ry="28"/>
+    <ellipse cx="40" cy="235" rx="70" ry="26"/>
+  </g>
+  <g transform="translate(175,205)">
+    <ellipse cx="-8" cy="6" rx="12" ry="16" fill="#7A4A18" opacity="0.8"/>
+    <circle cx="-8" cy="-10" r="9" fill="#E3A855" opacity="0.85"/>
+  </g>
+  <g transform="translate(210,215)">
+    <ellipse cx="0" cy="8" rx="14" ry="17" fill="#C1782B" opacity="0.75"/>
+    <circle cx="9" cy="-2" r="7" fill="#C1782B" opacity="0.75"/>
+  </g>
+</svg>

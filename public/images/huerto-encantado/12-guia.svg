@@ -1,0 +1,30 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dusk12" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#362A57"/>
+      <stop offset="100%" stop-color="#120E1C"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#dusk12)"/>
+  <g fill="#EFC873" opacity="0.85">
+    <circle cx="90" cy="180" r="4"/>
+    <circle cx="140" cy="150" r="3"/>
+    <circle cx="200" cy="190" r="4"/>
+    <circle cx="260" cy="160" r="3"/>
+    <circle cx="310" cy="200" r="4"/>
+    <circle cx="170" cy="220" r="3"/>
+  </g>
+  <path d="M0 300 C120 240, 280 240, 400 300 Z" fill="#1C1730"/>
+  <g transform="translate(220,255)">
+    <ellipse cx="-14" cy="10" rx="8" ry="18" fill="#F4E8D2"/>
+    <circle cx="-14" cy="-10" r="7" fill="#F4E8D2"/>
+    <ellipse cx="16" cy="15" rx="14" ry="9" fill="#D4A24C"/>
+    <path d="M4 8 L26 4" stroke="#D4A24C" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+  <g fill="#FCF6EA" opacity="0.6">
+    <circle cx="60" cy="60" r="1.6"/>
+    <circle cx="140" cy="40" r="1.8"/>
+    <circle cx="220" cy="55" r="1.4"/>
+    <circle cx="320" cy="45" r="2"/>
+  </g>
+</svg>

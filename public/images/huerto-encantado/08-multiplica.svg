@@ -1,0 +1,28 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glow8" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#EFC873" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#FCF6EA" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="300" fill="#FCF6EA"/>
+  <circle cx="200" cy="150" r="140" fill="url(#glow8)"/>
+  <rect x="192" y="150" width="16" height="110" fill="#9C6F22"/>
+  <circle cx="200" cy="140" r="90" fill="#2EB894" opacity="0.9"/>
+  <g fill="#D4A24C">
+    <circle cx="150" cy="100" r="16"/>
+    <circle cx="250" cy="105" r="16"/>
+    <circle cx="130" cy="150" r="16"/>
+    <circle cx="270" cy="150" r="16"/>
+    <circle cx="160" cy="185" r="16"/>
+    <circle cx="240" cy="188" r="16"/>
+    <circle cx="200" cy="90" r="16"/>
+    <circle cx="200" cy="200" r="16"/>
+  </g>
+  <g fill="#EFC873">
+    <path d="M80 70 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 Z"/>
+    <path d="M320 80 l4 11 11 4 -11 4 -4 11 -4 -11 -11 -4 11 -4 Z"/>
+    <path d="M300 220 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z"/>
+    <path d="M90 230 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z"/>
+  </g>
+</svg>

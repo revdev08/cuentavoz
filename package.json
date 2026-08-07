@@ -1,0 +1,32 @@
+{
+  "name": "story-app-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/localizations": "^4.13.6",
+    "@clerk/nextjs": "^5.7.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "howler": "^2.2.4",
+    "next": "14.2.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "svix": "^1.98.0"
+  },
+  "devDependencies": {
+    "@ducanh2912/next-pwa": "^10.2.6",
+    "@types/howler": "^2.2.11",
+    "@types/node": "^20.14.10",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.3"
+  }
+}
