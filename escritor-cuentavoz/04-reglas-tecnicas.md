@@ -392,17 +392,17 @@ Todos los bloques tienen imagen.
 Formato obligatorio:
 
 ```
-/images/[slug]/01-nombre-escena.png
+/images/[slug]/01-nombre-escena.webp
 ```
 
 Ejemplos
 
 ```
-/images/la-campana-agradecida/01-campana-olvidada.png
+/images/la-campana-agradecida/01-campana-olvidada.webp
 
-/images/la-campana-agradecida/02-pueblo-neblina.png
+/images/la-campana-agradecida/02-pueblo-neblina.webp
 
-/images/la-campana-agradecida/03-primer-gracias.png
+/images/la-campana-agradecida/03-primer-gracias.webp
 ```
 
 Reglas
@@ -417,11 +417,11 @@ Siempre:
 Nunca utilizar:
 
 ```
-escena1.png
+escena1.webp
 
-imagen.png
+imagen.webp
 
-foto.png
+foto.webp
 ```
 
 ---
@@ -433,21 +433,21 @@ Cada escena debe describir claramente la ilustración.
 Correcto
 
 ```
-07-campana-sonando.png
+07-campana-sonando.webp
 
-09-rio-con-estrellas.png
+09-rio-con-estrellas.webp
 
-14-arbol-florecido.png
+14-arbol-florecido.webp
 ```
 
 Incorrecto
 
 ```
-07-final.png
+07-final.webp
 
-09-imagen.png
+09-imagen.webp
 
-14-escena.png
+14-escena.webp
 ```
 
 ---
@@ -573,6 +573,21 @@ silbó
 
 Nunca utilizar palabras que no aparecen en el texto.
 
+## Prueba de sonido obligatoria
+
+Antes de asignar una palabra clave, comprobar dos cosas:
+
+1. La palabra aparece literalmente en el texto del mismo bloque.
+2. El adulto o el niño pueden imaginar de inmediato el sonido al leerla.
+
+Una palabra visual o de contexto no basta. Por ejemplo, `brilló`,
+`camino`, `puerta` o `dorado` no deben disparar audio por sí solas.
+En cambio, `tictac`, `campanada`, `amasado`, `crujió`, `chapoteó` o
+`pájaros` sí pueden hacerlo cuando coinciden con el audio asignado.
+
+Si la escena no ofrece una palabra sonora honesta, el bloque debe quedar
+sin sonido (`null`, `array[]::text[]`).
+
 ---
 
 # Bloques sin sonido
@@ -617,15 +632,15 @@ Después del SQL entregar únicamente:
 ## Imágenes
 
 ```
-01-campana-olvidada.png
+01-campana-olvidada.webp
 
-02-pueblo-neblina.png
+02-pueblo-neblina.webp
 
-03-primer-gracias.png
+03-primer-gracias.webp
 
 ...
 
-18-celebracion-final.png
+18-celebracion-final.webp
 ```
 
 ## Sonidos nuevos

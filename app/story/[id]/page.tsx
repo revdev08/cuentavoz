@@ -5,8 +5,10 @@ import { StoryPlayer } from "@/components/StoryPlayer";
 
 export default async function StoryPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams: { continuar?: string };
 }) {
   const { userId } = auth();
   const supabase = createServiceRoleClient();
@@ -48,12 +50,33 @@ export default async function StoryPage({
     sonido: sonidos?.find((s) => s.id === b.sound_effect_id) ?? null,
   }));
 
+  // "Continuar donde quedó": si el dashboard enlazó con ?continuar=<hijoId>,
+  // busca la sesión guardada para ese niño y ese cuento.
+  let sesionExistente;
+  if (searchParams.continuar) {
+    const { data: sesion } = await supabase
+      .from("story_sessions")
+      .select("ultimo_bloque, variables_usadas")
+      .eq("child_profile_id", searchParams.continuar)
+      .eq("story_id", story.id)
+      .maybeSingle();
+
+    if (sesion) {
+      sesionExistente = {
+        hijoId: searchParams.continuar,
+        ultimoBloque: sesion.ultimo_bloque,
+        variablesUsadas: sesion.variables_usadas as Record<string, string>,
+      };
+    }
+  }
+
   return (
     <StoryPlayer
       story={story}
       bloques={bloquesConSonido}
       variables={variables ?? []}
       hijos={hijos ?? []}
+      sesionExistente={sesionExistente}
     />
   );
 }

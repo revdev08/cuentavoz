@@ -57,7 +57,9 @@ export type Database = {
         Row: {
           id: string;
           titulo: string;
+          slug: string | null;
           edad_recomendada: string | null;
+          categoria: string | null;
           es_personalizable: boolean;
           portada_url: string | null;
           created_at: string;
@@ -65,7 +67,9 @@ export type Database = {
         Insert: {
           id?: string;
           titulo: string;
+          slug?: string | null;
           edad_recomendada?: string | null;
+          categoria?: string | null;
           es_personalizable?: boolean;
           portada_url?: string | null;
           created_at?: string;
@@ -142,7 +146,9 @@ export type Database = {
           story_id: string;
           variables_usadas: Record<string, string>;
           completado: boolean;
+          ultimo_bloque: number;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -150,10 +156,30 @@ export type Database = {
           story_id: string;
           variables_usadas?: Record<string, string>;
           completado?: boolean;
+          ultimo_bloque?: number;
           created_at?: string;
+          updated_at?: string;
         };
         Update: Partial<
           Database["public"]["Tables"]["story_sessions"]["Insert"]
+        >;
+        Relationships: [];
+      };
+      story_favorites: {
+        Row: {
+          id: string;
+          family_id: string;
+          story_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          family_id: string;
+          story_id: string;
+          created_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["story_favorites"]["Insert"]
         >;
         Relationships: [];
       };

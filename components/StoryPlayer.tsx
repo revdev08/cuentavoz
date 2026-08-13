@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSupabaseClient } from "@/lib/supabase/client";
 import { useBlockAudio } from "@/lib/audio/useBlockAudio";
@@ -68,6 +68,38 @@ const ETIQUETAS: Record<string, string> = {
   pueblo_destino: "¿A qué pueblo deben llegar?",
   nombre_vela: "¿Cómo se llama la vela más delgada?",
   color_vela: "¿De qué color es la vela?",
+  nombre_nube: "¿Cómo se llama la nube?",
+  color_nube: "¿De qué color se pone la nube al atardecer?",
+  nombre_valle: "¿Cómo se llama el valle?",
+  nombre_semilla: "¿Cómo se llama la semilla?",
+  color_flor: "¿De qué color florece?",
+  nombre_jardin: "¿Cómo se llama el jardín?",
+  nombre_barco: "¿Cómo se llama el barco de papel?",
+  color_barco: "¿De qué color es el papel del barco?",
+  nombre_rio: "¿Cómo se llama el río?",
+  nombre_erizo: "¿Cómo se llama el erizo?",
+  color_puas: "¿De qué color son sus púas?",
+  nombre_bosque: "¿Cómo se llama el bosque?",
+  nombre_amigo: "¿Cómo se llama su amigo o amiga?",
+  nombre_huerto: "¿Cómo se llama el huerto de la familia?",
+  nombre_castor: "¿Cómo se llama el castor?",
+  color_pelaje: "¿De qué color es su pelaje?",
+  nombre_arroyo: "¿Cómo se llama el arroyo?",
+  nombre_campana: "¿Cómo se llama la campana?",
+  color_campana: "¿De qué color es la campana?",
+  nombre_pueblo: "¿Cómo se llama el pueblo?",
+  nombre_estrella: "¿Cómo se llama la estrella?",
+  color_estrella: "¿De qué color brilla?",
+  nombre_constelacion: "¿Cómo se llama su constelación?",
+  nombre_reloj: "¿Cómo se llama el reloj?",
+  nombre_panaderia: "¿Cómo se llama la panadería?",
+  pan_favorito: "¿Cuál es el pan favorito de la casa?",
+  nombre_gaviota: "¿Cómo se llama la gaviota?",
+  nombre_playa: "¿Cómo se llama la playa?",
+  color_peine: "¿De qué color es el peine de concha?",
+  nombre_farol: "¿Cómo se llama el farol?",
+  nombre_estacion: "¿Cómo se llama la estación?",
+  color_luz: "¿De qué color es su luz?",
 };
 
 // Red de seguridad para variable_key que no tengan pregunta propia en
@@ -109,20 +141,31 @@ export function StoryPlayer({
   bloques,
   variables,
   hijos,
+  sesionExistente,
 }: {
   story: Story;
   bloques: StoryBlock[];
   variables: StoryVariable[];
   hijos: ChildProfile[];
+  /** Para "continuar donde quedó" desde el dashboard -- la última fila de
+   * story_sessions para ese (niño, cuento), si existe. Si viene, se salta
+   * la personalización (ya se hizo antes) y arranca directo en su bloque. */
+  sesionExistente?: {
+    hijoId: string;
+    ultimoBloque: number;
+    variablesUsadas: Record<string, string>;
+  };
 }) {
   const supabase = useSupabaseClient();
-  const requierePersonalizacion = story.es_personalizable && variables.length > 0;
+  const requierePersonalizacion =
+    story.es_personalizable && variables.length > 0 && !sesionExistente;
 
   const [fase, setFase] = useState<"personalizar" | "leyendo" | "completado">(
     requierePersonalizacion ? "personalizar" : "leyendo"
   );
-  const [hijoId, setHijoId] = useState(hijos[0]?.id ?? "");
+  const [hijoId, setHijoId] = useState(sesionExistente?.hijoId ?? hijos[0]?.id ?? "");
   const [valores, setValores] = useState<Record<string, string>>(() => {
+    if (sesionExistente) return sesionExistente.variablesUsadas;
     const iniciales: Record<string, string> = {};
     for (const v of variables) {
       if (v.variable_key === "nombre_niño" && hijos[0]) {
@@ -133,7 +176,9 @@ export function StoryPlayer({
     }
     return iniciales;
   });
-  const [indice, setIndice] = useState(0);
+  const [indice, setIndice] = useState(() =>
+    Math.min(sesionExistente?.ultimoBloque ?? 0, Math.max(bloques.length - 1, 0))
+  );
   // Por defecto el disparador es la voz: el padre lee la palabra en voz
   // alta y ahí suena, en vez de sonar apenas aparece el bloque.
   const [modoEscucha, setModoEscucha] = useState(true);
@@ -173,6 +218,28 @@ export function StoryPlayer({
     [bloqueActual, valoresConArticulos]
   );
 
+  // Guarda en qué bloque va cada vez que avanza (o retrocede), para que
+  // "Últimos escuchados" en el dashboard pueda mostrar progreso real y
+  // ofrecer "continuar donde quedó". Una sola fila por (niño, cuento):
+  // se actualiza en su lugar en vez de crear una fila nueva cada vez.
+  useEffect(() => {
+    if (fase !== "leyendo" || !hijoId) return;
+    supabase
+      .from("story_sessions")
+      .upsert(
+        {
+          child_profile_id: hijoId,
+          story_id: story.id,
+          variables_usadas: valores,
+          ultimo_bloque: indice,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "child_profile_id,story_id" }
+      )
+      .then(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [indice, fase, hijoId]);
+
   async function avanzar() {
     if (!esUltimo) {
       setIndice((i) => i + 1);
@@ -184,12 +251,17 @@ export function StoryPlayer({
 
     setGuardando(true);
     setErrorGuardado(false);
-    const { error } = await supabase.from("story_sessions").insert({
-      child_profile_id: hijoId,
-      story_id: story.id,
-      variables_usadas: valores,
-      completado: true,
-    });
+    const { error } = await supabase.from("story_sessions").upsert(
+      {
+        child_profile_id: hijoId,
+        story_id: story.id,
+        variables_usadas: valores,
+        ultimo_bloque: indice,
+        completado: true,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "child_profile_id,story_id" }
+    );
     setGuardando(false);
     if (error) setErrorGuardado(true);
   }

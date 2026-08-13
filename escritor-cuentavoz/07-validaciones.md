@@ -107,6 +107,9 @@ reescribir.
 
 ✓ Las palabras clave son correctas.
 
+✓ Cada palabra clave supera la prueba de sonido: aparece en su bloque y
+  describe literalmente el audio asignado, no solo la imagen o el contexto.
+
 ✓ Las rutas son coherentes.
 
 ✓ No existen bloques repetidos.

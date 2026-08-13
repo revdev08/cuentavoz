@@ -364,7 +364,7 @@ Todos los bloques deben tener imagen.
 Formato obligatorio.
 
 ```text
-/images/[slug]/01-nombre-escena.png
+/images/[slug]/01-nombre-escena.webp
 ```
 
 Nunca reutilizar imágenes.
@@ -380,11 +380,11 @@ Después del SQL.
 ## Imágenes
 
 ```
-01-campana-olvidada.png
+01-campana-olvidada.webp
 
-02-primer-dia.png
+02-primer-dia.webp
 
-03-viento-suave.png
+03-viento-suave.webp
 
 ...
 ```

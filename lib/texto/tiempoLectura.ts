@@ -20,3 +20,11 @@ export function estimarMinutosLectura(bloques: { texto_bloque: string }[]): numb
     totalPalabras / PALABRAS_POR_MINUTO + (bloques.length * SEGUNDOS_PAUSA_POR_BLOQUE) / 60;
   return Math.max(1, Math.round(minutos));
 }
+
+/** "3:45" a partir de minutos con decimales. */
+export function formatearMinSeg(minutos: number): string {
+  const totalSegundos = Math.max(0, Math.round(minutos * 60));
+  const m = Math.floor(totalSegundos / 60);
+  const s = totalSegundos % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}

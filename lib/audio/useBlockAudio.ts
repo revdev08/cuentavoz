@@ -79,19 +79,18 @@ export function useBlockAudio(
 
       recognition.onresult = (event: any) => {
         if (yaSono) return;
-        // Solo se cuentan resultados "isFinal": los interinos son intentos
-        // provisionales mientras la persona todavía está hablando y pueden
-        // adivinar mal o anticipar la palabra antes de que se termine de
-        // decir (eso disparaba el sonido demasiado pronto).
-        const transcriptFinal = Array.from(event.results as ArrayLike<any>)
-          .filter((r: any) => r.isFinal)
+        
+        // Evaluamos todos los resultados (finales e interinos).
+        // Al incluir los interinos, la detección ocurre apenas se pronuncia la
+        // palabra, sin tener que esperar a que el usuario haga una pausa (isFinal).
+        const transcriptTotal = Array.from(event.results as ArrayLike<any>)
           .map((r: any) => r[0].transcript)
           .join(" ")
           .toLowerCase();
 
-        if (!transcriptFinal) return;
+        if (!transcriptTotal) return;
 
-        if (opciones.keywords.some((k) => transcriptFinal.includes(k.toLowerCase()))) {
+        if (opciones.keywords.some((k) => transcriptTotal.includes(k.toLowerCase()))) {
           reproducir();
         }
       };

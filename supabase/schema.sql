@@ -31,6 +31,7 @@ create table if not exists stories (
   titulo text not null,
   slug text unique,
   edad_recomendada text,
+  categoria text,
   es_personalizable boolean not null default false,
   portada_url text,
   created_at timestamptz not null default now()
@@ -60,7 +61,18 @@ create table if not exists story_sessions (
   story_id uuid not null references stories(id),
   variables_usadas jsonb default '{}',
   completado boolean not null default false,
-  created_at timestamptz not null default now()
+  ultimo_bloque int not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (child_profile_id, story_id)
+);
+
+create table if not exists story_favorites (
+  id uuid primary key default gen_random_uuid(),
+  family_id uuid not null references families(id) on delete cascade,
+  story_id uuid not null references stories(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  unique (family_id, story_id)
 );
 
 create table if not exists subscriptions (
@@ -77,6 +89,7 @@ create table if not exists subscriptions (
 alter table families enable row level security;
 alter table children_profiles enable row level security;
 alter table story_sessions enable row level security;
+alter table story_favorites enable row level security;
 alter table subscriptions enable row level security;
 
 -- stories, story_blocks, sound_effects y story_variables son catálogo
@@ -104,6 +117,10 @@ create policy "familia gestiona sus sesiones de cuento"
       where f.clerk_user_id = auth.jwt() ->> 'sub'
     )
   );
+
+create policy "familia gestiona sus favoritos"
+  on story_favorites for all
+  using (family_id in (select id from families where clerk_user_id = auth.jwt() ->> 'sub'));
 
 create policy "familia ve su propia suscripcion"
   on subscriptions for select
