@@ -36,7 +36,9 @@ export default async function DashboardPage() {
     supabase
       .from("stories")
       .select("id, titulo, edad_recomendada, categoria, portada_url")
-      .limit(20),
+      // La biblioteca debe recibir el catálogo completo. El límite anterior
+      // dejaba fuera cualquier cuento a partir del número 21.
+      .order("created_at", { ascending: false }),
     supabase.from("story_favorites").select("story_id").eq("family_id", family!.id),
   ]);
 

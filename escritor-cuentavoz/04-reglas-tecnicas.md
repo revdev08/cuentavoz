@@ -424,6 +424,26 @@ imagen.webp
 foto.webp
 ```
 
+## Conversión obligatoria a WebP
+
+La IA puede entregar las ilustraciones en PNG, JPG, SVG u otro formato, pero dentro de la carpeta final de cada cuento deben quedar **solo archivos `.webp`**.
+
+Cuando estén todas las imágenes de un cuento en `public/images/[slug]/`, ejecutar:
+
+```bash
+npm run images:webp -- [slug-del-cuento]
+```
+
+Ejemplo:
+
+```bash
+npm run images:webp -- el-pez-globo-que-aprendio-a-respirar
+```
+
+El comando convierte las imágenes de esa carpeta a WebP, valida que cada archivo generado se pueda leer y únicamente después elimina el original. Si una conversión falla, conserva el archivo fuente para que pueda corregirse. No modifica otros cuentos.
+
+Antes de ejecutar el SQL, comprobar que las rutas `imagen_url` terminan en `.webp` y que la carpeta contiene únicamente los WebP finales.
+
 ---
 
 # Nombre de escenas

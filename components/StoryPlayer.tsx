@@ -100,6 +100,21 @@ const ETIQUETAS: Record<string, string> = {
   nombre_farol: "¿Cómo se llama el farol?",
   nombre_estacion: "¿Cómo se llama la estación?",
   color_luz: "¿De qué color es su luz?",
+  nombre_cometa: "¿Cómo se llama la cometa?",
+  color_cometa: "¿De qué color es la cometa?",
+  nombre_colina: "¿Cómo se llama la colina?",
+  nombre_lapiz: "¿Cómo se llama el lápiz?",
+  color_lapiz: "¿De qué color es el lápiz?",
+  nombre_taller: "¿Cómo se llama el taller?",
+  nombre_paraguas: "¿Cómo se llama el paraguas?",
+  color_paraguas: "¿De qué color es el paraguas?",
+  nombre_violin: "¿Cómo se llama el violín?",
+  color_violin: "¿De qué color es el violín?",
+  nombre_feria: "¿Cómo se llama la feria?",
+  nombre_alpaca: "¿Cómo se llama la alpaca?",
+  color_manta: "¿De qué color es su manta?",
+  nombre_pueblo_montana: "¿Cómo se llama el pueblo de la montaña?",
+  nombre_pueblo: "¿Cómo se llama el pueblo?",
 };
 
 // Red de seguridad para variable_key que no tengan pregunta propia en
