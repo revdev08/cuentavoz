@@ -16,7 +16,7 @@ const PLANES = [
     nombre: "Premium semestral",
     precio: "$119.900",
     periodo: "COP / 6 meses",
-    items: ["Todo lo del plan mensual", "Equivale a $24.833 COP/mes", "Un cobro cada seis meses"],
+    items: ["Todo lo del plan mensual", "Equivale a $19.990 COP/mes", "Un cobro cada seis meses"],
     cta: "Empezar Premium semestral",
     href: "/api/checkout/mercadopago?plan=semestral",
     destacado: true,
