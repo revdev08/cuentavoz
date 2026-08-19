@@ -21,7 +21,7 @@ export async function GET(req: Request) {
       return new NextResponse("MELI_ACCESS_TOKEN no configurado", { status: 500 });
     }
 
-    const email = user.primaryEmailAddress?.emailAddress ?? user.emailAddresses[0]?.emailAddress;
+    const email = (user.primaryEmailAddress?.emailAddress ?? user.emailAddresses[0]?.emailAddress)?.toLowerCase();
     if (!email) {
       return new NextResponse("Tu cuenta necesita un correo electrónico", { status: 400 });
     }
@@ -41,7 +41,7 @@ export async function GET(req: Request) {
     const supabase = createServiceRoleClient();
     let { data: family, error: familyError } = await supabase
       .from("families")
-      .select("id, plan")
+      .select("id, email, plan")
       .eq("clerk_user_id", userId)
       .maybeSingle();
 
@@ -50,11 +50,14 @@ export async function GET(req: Request) {
     if (!family) {
       const result = await supabase
         .from("families")
-        .insert({ clerk_user_id: userId, plan: "inactive" })
-        .select("id, plan")
+        .insert({ clerk_user_id: userId, email, plan: "inactive" })
+        .select("id, email, plan")
         .single();
       if (result.error) throw result.error;
       family = result.data;
+    } else if (family.email !== email) {
+      const { error } = await supabase.from("families").update({ email }).eq("id", family.id);
+      if (error) throw error;
     }
 
     if (family.plan === "premium") {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { SidebarNav } from "@/components/SidebarNav";
@@ -13,6 +13,8 @@ import { estimarMinutosLectura, formatearMinSeg } from "@/lib/texto/tiempoLectur
 
 export default async function DashboardPage() {
   const { userId } = auth();
+  const user = await currentUser();
+  const email = user?.primaryEmailAddress?.emailAddress.toLowerCase() ?? null;
   const supabase = createServiceRoleClient();
 
   // El webhook de Clerk (app/api/webhooks/clerk) ya debería haber creado
@@ -27,10 +29,13 @@ export default async function DashboardPage() {
   if (!family) {
     const { data: nuevaFamilia } = await supabase
       .from("families")
-      .insert({ clerk_user_id: userId!, plan: "inactive" })
+      .insert({ clerk_user_id: userId!, email, plan: "inactive" })
       .select()
       .single();
     family = nuevaFamilia;
+  } else if (family.email !== email) {
+    await supabase.from("families").update({ email }).eq("id", family.id);
+    family = { ...family, email };
   }
 
   if (family?.plan !== "premium") {

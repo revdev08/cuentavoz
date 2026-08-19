@@ -14,23 +14,25 @@ export default async function PlanesPage({
   if (!userId) redirect("/sign-in");
 
   const user = await currentUser();
-  const email = user?.primaryEmailAddress?.emailAddress ?? "";
+  const email = user?.primaryEmailAddress?.emailAddress.toLowerCase() ?? "";
   const mostrarDesarrollador = emailPuedeUsarPlanDesarrollador(email);
 
   const supabase = createServiceRoleClient();
   let { data: family } = await supabase
     .from("families")
-    .select("id, plan")
+    .select("id, email, plan")
     .eq("clerk_user_id", userId)
     .maybeSingle();
 
   if (!family) {
     const result = await supabase
       .from("families")
-      .insert({ clerk_user_id: userId, plan: "inactive" })
-      .select("id, plan")
+      .insert({ clerk_user_id: userId, email: email || null, plan: "inactive" })
+      .select("id, email, plan")
       .single();
     family = result.data;
+  } else if (email && family.email !== email) {
+    await supabase.from("families").update({ email }).eq("id", family.id);
   }
 
   if (family?.plan === "premium") redirect("/dashboard");

@@ -3,12 +3,12 @@ import { Webhook } from "svix";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 
 /**
- * Recibe el evento "user.created" de Clerk y crea la fila correspondiente
- * en la tabla `families` de Supabase.
+ * Recibe user.created/user.updated de Clerk y sincroniza el ID y el correo
+ * principal en la tabla `families` de Supabase.
  *
  * Configurar en Clerk Dashboard -> Webhooks:
  *   URL: https://www.cuentavoz.com/api/webhooks/clerk
- *   Eventos: user.created
+ *   Eventos: user.created, user.updated
  * Copiar el "Signing Secret" a CLERK_WEBHOOK_SECRET en .env
  *
  * Requiere instalar "svix": npm install svix
@@ -31,7 +31,14 @@ export async function POST(req: Request) {
   const body = await req.text();
   const wh = new Webhook(secret);
 
-  let event: { type: string; data: { id: string } };
+  let event: {
+    type: string;
+    data: {
+      id: string;
+      primary_email_address_id?: string | null;
+      email_addresses?: Array<{ id: string; email_address: string }>;
+    };
+  };
   try {
     event = wh.verify(body, {
       "svix-id": svixId,
@@ -42,13 +49,16 @@ export async function POST(req: Request) {
     return new Response("Firma inválida", { status: 400 });
   }
 
-  if (event.type === "user.created") {
+  if (event.type === "user.created" || event.type === "user.updated") {
+    const primaryEmail = event.data.email_addresses
+      ?.find((item) => item.id === event.data.primary_email_address_id)
+      ?.email_address.toLowerCase();
     const supabase = createServiceRoleClient();
     const { error } = await supabase
       .from("families")
       .upsert(
-        { clerk_user_id: event.data.id, plan: "inactive" },
-        { onConflict: "clerk_user_id", ignoreDuplicates: true }
+        { clerk_user_id: event.data.id, email: primaryEmail ?? null },
+        { onConflict: "clerk_user_id" }
       );
 
     if (error) {

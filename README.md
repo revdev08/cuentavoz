@@ -67,14 +67,16 @@ Completa cada valor según los pasos 2 y 3. Nunca subas `.env.local` a git
 
 ## 6. Webhook de Clerk -> Supabase
 
-Para que se cree automáticamente la fila en `families` cuando alguien se
-registra:
+Para crear la fila en `families` y mantener sincronizado el correo principal:
 
 1. En local, usa [ngrok](https://ngrok.com) o `clerk dev` para exponer tu
    `localhost:3000`.
-2. En Clerk Dashboard -> **Webhooks**, agrega un endpoint apuntando a
-   `https://tu-url/api/webhooks/clerk`, evento `user.created`.
+2. En Clerk Dashboard -> **Webhooks**, agrega el endpoint
+   `https://www.cuentavoz.com/api/webhooks/clerk` con los eventos
+   `user.created` y `user.updated`.
 3. Copia el "Signing Secret" a `CLERK_WEBHOOK_SECRET` en `.env.local`.
+4. Ejecuta `supabase/migracion_email_familias.sql` antes de desplegar el
+   código que escribe el correo.
 
 ## 7. Correr en desarrollo
 

@@ -17,12 +17,14 @@ export type Database = {
         Row: {
           id: string;
           clerk_user_id: string;
+          email: string | null;
           plan: "inactive" | "premium";
           created_at: string;
         };
         Insert: {
           id?: string;
           clerk_user_id: string;
+          email?: string | null;
           plan?: "inactive" | "premium";
           created_at?: string;
         };
