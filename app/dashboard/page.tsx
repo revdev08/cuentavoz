@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
 import { createServiceRoleClient } from "@/lib/supabase/server";
@@ -10,11 +11,7 @@ import { ProtagonistasPanel } from "@/components/ProtagonistasPanel";
 import { Medallon } from "@/components/Medallon";
 import { estimarMinutosLectura, formatearMinSeg } from "@/lib/texto/tiempoLectura";
 
-export default async function DashboardPage({
-  searchParams,
-}: {
-  searchParams?: { checkout?: string };
-}) {
+export default async function DashboardPage() {
   const { userId } = auth();
   const supabase = createServiceRoleClient();
 
@@ -30,10 +27,14 @@ export default async function DashboardPage({
   if (!family) {
     const { data: nuevaFamilia } = await supabase
       .from("families")
-      .insert({ clerk_user_id: userId!, plan: "free" })
+      .insert({ clerk_user_id: userId!, plan: "inactive" })
       .select()
       .single();
     family = nuevaFamilia;
+  }
+
+  if (family?.plan !== "premium") {
+    redirect("/planes");
   }
 
   const [{ data: hijos }, { data: cuentos }, { data: favoritos }] = await Promise.all([
@@ -111,11 +112,6 @@ export default async function DashboardPage({
 
       <main className="relative min-w-0 flex-1 overflow-hidden px-5 py-6 sm:px-8 sm:py-8 lg:px-10 xl:px-14">
         <div aria-hidden className="pointer-events-none absolute -right-40 top-[540px] h-[520px] w-[520px] rounded-full bg-esmeralda-300/15 blur-3xl dark:bg-esmeralda-500/5" />
-        {searchParams?.checkout === "pendiente" && (
-          <div className="relative mb-5 rounded-2xl border border-oro-400/40 bg-oro-100 px-5 py-4 text-sm text-tinta-900 shadow-sm dark:bg-oro-500/10 dark:text-pergamino-50">
-            Recibimos tu regreso desde Mercado Pago. Tu plan se activará cuando Mercado Pago confirme la suscripción; puedes recargar esta página en unos segundos.
-          </div>
-        )}
         {/* Barra superior solo en móvil -- en desktop esta info ya vive en el sidebar */}
         <div className="mb-6 flex items-center justify-between md:hidden">
           <Link href="/dashboard" className="flex items-center gap-2">

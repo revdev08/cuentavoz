@@ -93,7 +93,7 @@ export async function crearSuscripcion({
         transaction_amount: plan.monto,
         currency_id: "COP",
       },
-      back_url: `${appUrl}/dashboard?checkout=pendiente`,
+      back_url: `${appUrl}/planes?checkout=pendiente`,
       status: "pending",
     }),
   });

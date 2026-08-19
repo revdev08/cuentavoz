@@ -5,7 +5,7 @@
 create table if not exists families (
   id uuid primary key default gen_random_uuid(),
   clerk_user_id text unique not null,
-  plan text not null default 'free' check (plan in ('free', 'premium')),
+  plan text not null default 'inactive' check (plan in ('inactive', 'premium')),
   created_at timestamptz not null default now()
 );
 

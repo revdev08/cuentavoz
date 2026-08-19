@@ -7,7 +7,7 @@ import { createServiceRoleClient } from "@/lib/supabase/server";
  * en la tabla `families` de Supabase.
  *
  * Configurar en Clerk Dashboard -> Webhooks:
- *   URL: https://tu-dominio.com/api/webhooks/clerk
+ *   URL: https://www.cuentavoz.com/api/webhooks/clerk
  *   Eventos: user.created
  * Copiar el "Signing Secret" a CLERK_WEBHOOK_SECRET en .env
  *
@@ -46,7 +46,10 @@ export async function POST(req: Request) {
     const supabase = createServiceRoleClient();
     const { error } = await supabase
       .from("families")
-      .insert({ clerk_user_id: event.data.id, plan: "free" });
+      .upsert(
+        { clerk_user_id: event.data.id, plan: "inactive" },
+        { onConflict: "clerk_user_id", ignoreDuplicates: true }
+      );
 
     if (error) {
       console.error("Error creando familia en Supabase:", error);

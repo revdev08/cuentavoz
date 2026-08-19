@@ -34,7 +34,7 @@ export async function GET(req: Request) {
     const supabase = createServiceRoleClient();
     let { data: family, error: familyError } = await supabase
       .from("families")
-      .select("id")
+      .select("id, plan")
       .eq("clerk_user_id", userId)
       .maybeSingle();
 
@@ -43,11 +43,15 @@ export async function GET(req: Request) {
     if (!family) {
       const result = await supabase
         .from("families")
-        .insert({ clerk_user_id: userId, plan: "free" })
-        .select("id")
+        .insert({ clerk_user_id: userId, plan: "inactive" })
+        .select("id, plan")
         .single();
       if (result.error) throw result.error;
       family = result.data;
+    }
+
+    if (family.plan === "premium") {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
     }
 
     const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? url.origin).replace(/\/$/, "");

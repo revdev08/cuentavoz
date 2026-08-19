@@ -2,16 +2,6 @@ import Link from "next/link";
 
 const PLANES = [
   {
-    tag: "Para probar",
-    nombre: "Gratis",
-    precio: "$0",
-    periodo: "",
-    items: ["2-3 cuentos completos", "Personalización de personajes", "Modo escucha por voz"],
-    cta: "Crear cuenta gratis",
-    href: "/sign-up",
-    destacado: false,
-  },
-  {
     tag: "Mensual",
     nombre: "Premium",
     precio: "$60.000",
@@ -43,7 +33,7 @@ export function SeccionPrecios() {
         </h2>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-3">
+      <div className="mx-auto grid max-w-2xl gap-6 sm:grid-cols-2">
         {PLANES.map((plan) => (
           <div
             key={plan.nombre}
@@ -115,7 +105,7 @@ export function SeccionPrecios() {
       </div>
 
       <p className="mt-6 text-center text-sm text-tinta-900/50 dark:text-pergamino-50/50">
-        También hay paquetes temáticos puntuales desde $9.900 COP.
+        Se requiere una cuenta de Cuentavoz antes de completar el pago.
       </p>
     </section>
   );

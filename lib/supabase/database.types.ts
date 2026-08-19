@@ -17,13 +17,13 @@ export type Database = {
         Row: {
           id: string;
           clerk_user_id: string;
-          plan: "free" | "premium";
+          plan: "inactive" | "premium";
           created_at: string;
         };
         Insert: {
           id?: string;
           clerk_user_id: string;
-          plan?: "free" | "premium";
+          plan?: "inactive" | "premium";
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["families"]["Insert"]>;

@@ -17,7 +17,7 @@ export default function SignUpPage() {
         <AppHeader />
         <main className="flex flex-col items-center justify-center px-6 pb-16 pt-4">
           <h1 className="mb-6 font-display text-2xl font-semibold text-tinta-900 dark:text-pergamino-50">
-            Crea tu cuenta gratis
+            Crea tu cuenta para elegir un plan
           </h1>
           <SignUp
             appearance={{

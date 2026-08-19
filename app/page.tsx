@@ -131,7 +131,7 @@ export default function HomePage() {
                 href="/sign-up"
                 className="rounded-full bg-oro-500 px-9 py-4 text-base font-extrabold text-tinta-950 shadow-[0_14px_30px_-10px_rgba(231,162,61,0.55)] transition hover:bg-oro-300"
               >
-                Crear cuenta gratis
+                Crear cuenta
               </Link>
               <Link
                 href="#demo"
@@ -150,7 +150,7 @@ export default function HomePage() {
             </SignedIn>
           </div>
           <p className="mt-4 text-sm text-pergamino-50/45">
-            2-3 cuentos completos gratis, sin tarjeta.
+            Elige entre el plan mensual o semestral después de registrarte.
           </p>
         </div>
 
@@ -229,7 +229,7 @@ export default function HomePage() {
                 href="/sign-up"
                 className="rounded-full bg-oro-500 px-9 py-4 text-base font-extrabold text-tinta-950 shadow-[0_14px_30px_-10px_rgba(231,162,61,0.55)] transition hover:bg-oro-300"
               >
-                Crear cuenta gratis
+                Crear cuenta
               </Link>
               <Link
                 href="/sign-in"
@@ -248,7 +248,7 @@ export default function HomePage() {
             </SignedIn>
           </div>
           <p className="mt-4 text-sm text-pergamino-50/45">
-            2-3 cuentos completos gratis, sin tarjeta.
+            Elige un plan mensual o semestral para abrir la biblioteca.
           </p>
         </section>
 

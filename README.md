@@ -91,13 +91,14 @@ en desarrollo (`disable: process.env.NODE_ENV === "development"` en
 
 Los planes viven en `lib/mercadopago.ts`: mensual por $60.000 COP y
 semestral por $149.000 COP. Registrarse no crea una suscripción: cada familia
-permanece en `free` hasta que Mercado Pago confirme el estado `authorized`.
+permanece en `inactive` y sin acceso a los cuentos hasta que Mercado Pago
+confirme el estado `authorized`.
 
 1. Ejecuta `supabase/migracion_mercadopago.sql` en Supabase SQL Editor.
 2. Configura `MELI_ACCESS_TOKEN`, `MERCADOPAGO_WEBHOOK_SECRET` y
    `NEXT_PUBLIC_APP_URL` en `.env.local`.
 3. En Mercado Pago -> Tus integraciones -> Webhooks, registra
-   `https://tu-dominio/api/webhooks/mercadopago`.
+   `https://www.cuentavoz.com/api/webhooks/mercadopago`.
 4. Activa el evento `subscription_preapproval`. Mercado Pago también
    recomienda activar `payments` para seguir los cobros recurrentes.
 
@@ -119,8 +120,8 @@ Agrega tus íconos reales en `public/icons/icon-192.png` y
 - [ ] Formulario de personalización pre-cuento (nombre, color, animal).
 - [x] Checkout y webhook de suscripciones de Mercado Pago.
 - [ ] Integración internacional con Lemon Squeezy.
-- [ ] Paywall: bloquear cuentos más allá de los gratuitos según
-      `families.plan`.
+- [x] Control de acceso: usuarios `inactive` solo pueden elegir y pagar un
+      plan; dashboard y cuentos requieren `families.plan = premium`.
 
 ## Estructura del proyecto
 

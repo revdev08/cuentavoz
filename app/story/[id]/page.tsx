@@ -30,8 +30,12 @@ export default async function StoryPage({
       .eq("story_id", story.id)
       .order("orden", { ascending: true }),
     supabase.from("story_variables").select("*").eq("story_id", story.id),
-    supabase.from("families").select("id").eq("clerk_user_id", userId!).maybeSingle(),
+    supabase.from("families").select("id, plan").eq("clerk_user_id", userId!).maybeSingle(),
   ]);
+
+  if (familia?.plan !== "premium") {
+    redirect("/planes");
+  }
 
   const sonidoIds = Array.from(
     new Set((bloques ?? []).map((b) => b.sound_effect_id).filter((id): id is string => !!id))

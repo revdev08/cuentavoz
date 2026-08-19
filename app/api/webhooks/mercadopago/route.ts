@@ -96,7 +96,7 @@ export async function POST(req: Request) {
       const { error } = await supabase.from("families").update({ plan: "premium" }).eq("id", familyId);
       if (error) throw error;
     } else if (["cancelled", "canceled"].includes(mpSubscription.status)) {
-      const { error } = await supabase.from("families").update({ plan: "free" }).eq("id", familyId);
+      const { error } = await supabase.from("families").update({ plan: "inactive" }).eq("id", familyId);
       if (error) throw error;
     }
 
