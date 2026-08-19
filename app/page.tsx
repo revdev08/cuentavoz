@@ -10,6 +10,7 @@ import { SeccionComparacion } from "@/components/SeccionComparacion";
 import { SeccionVistaPrevia } from "@/components/SeccionVistaPrevia";
 import { SeccionPrecios } from "@/components/SeccionPrecios";
 import { SeccionPreguntas } from "@/components/SeccionPreguntas";
+import { SeccionMomentos } from "@/components/SeccionMomentos";
 
 const ESTRELLAS = [
   { left: "6%", top: "18%", size: 2, retraso: "0s" },
@@ -199,7 +200,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <div className="py-20" />
+        <SeccionMomentos />
 
         <SeccionVistaPrevia />
 
