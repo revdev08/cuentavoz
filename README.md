@@ -87,6 +87,24 @@ en desarrollo (`disable: process.env.NODE_ENV === "development"` en
 `next.config.mjs`) para no pelear con el hot reload — se activa solo en
 `npm run build && npm run start`.
 
+## 7.1 Mercado Pago: planes Premium
+
+Los planes viven en `lib/mercadopago.ts`: mensual por $60.000 COP y
+semestral por $149.000 COP. Registrarse no crea una suscripción: cada familia
+permanece en `free` hasta que Mercado Pago confirme el estado `authorized`.
+
+1. Ejecuta `supabase/migracion_mercadopago.sql` en Supabase SQL Editor.
+2. Configura `MELI_ACCESS_TOKEN`, `MERCADOPAGO_WEBHOOK_SECRET` y
+   `NEXT_PUBLIC_APP_URL` en `.env.local`.
+3. En Mercado Pago -> Tus integraciones -> Webhooks, registra
+   `https://tu-dominio/api/webhooks/mercadopago`.
+4. Activa el evento `subscription_preapproval`. Mercado Pago también
+   recomienda activar `payments` para seguir los cobros recurrentes.
+
+El checkout usa `/api/checkout/mercadopago?plan=mensual` o
+`?plan=semestral`. El webhook valida la firma, vuelve a consultar la
+preaprobación en Mercado Pago y solo después cambia `families.plan`.
+
 ## 8. Íconos del PWA
 
 Agrega tus íconos reales en `public/icons/icon-192.png` y
@@ -99,8 +117,8 @@ Agrega tus íconos reales en `public/icons/icon-192.png` y
 - [ ] Componente de reproductor de cuento con Howler.js (capas de audio +
       modo zona / modo escucha con Web Speech API).
 - [ ] Formulario de personalización pre-cuento (nombre, color, animal).
-- [ ] Integración de checkout de Mercado Pago (suscripción) y Lemon
-      Squeezy, con sus webhooks escribiendo en la tabla `subscriptions`.
+- [x] Checkout y webhook de suscripciones de Mercado Pago.
+- [ ] Integración internacional con Lemon Squeezy.
 - [ ] Paywall: bloquear cuentos más allá de los gratuitos según
       `families.plan`.
 

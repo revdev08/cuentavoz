@@ -14,11 +14,16 @@ const config: Config = {
           50: "#FBF4E4",
           100: "#F3E8D0",
           200: "#EADFC4",
+          300: "#D8C6A8",
         },
         // Oro: pan de oro de manuscrito iluminado. Acento principal, CTAs.
         oro: {
+          100: "#FBEBCB",
+          200: "#F6D99F",
           300: "#F0C078",
+          400: "#EBAF55",
           500: "#E7A23D",
+          600: "#D58D2D",
           700: "#C97E22",
         },
         // Esmeralda: verde musgo -- el brillo de "la magia del sonido".
@@ -32,8 +37,12 @@ const config: Config = {
         // Baya: acento berry, para eyebrows/citas/comparativas -- variar
         // del dorado y el musgo sin salir de la paleta cálida.
         baya: {
+          100: "#F8E3E7",
+          200: "#EDBBC3",
           300: "#D98A96",
+          400: "#C96878",
           500: "#B4485A",
+          600: "#9D3D4E",
           700: "#8A3444",
         },
         // Ciruela: profundidad secundaria para degradados y sombras.

@@ -81,8 +81,11 @@ create table if not exists subscriptions (
   proveedor text not null check (proveedor in ('mercadopago', 'lemonsqueezy')),
   estado text not null default 'active',
   plan text not null,
+  mp_preapproval_id text unique,
   fecha_renovacion timestamptz,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique (family_id, proveedor)
 );
 
 -- Row Level Security: cada familia solo ve sus propios datos.

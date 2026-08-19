@@ -1,7 +1,7 @@
 # Cuentavoz
 # 04 - Reglas Técnicas Oficiales
 
-Versión 2.0
+Versión 2.1
 
 ---
 
@@ -45,23 +45,23 @@ Debe incluir absolutamente todo lo necesario.
 
 ---
 
-## 2. Lista de assets
+## 2. Assets visuales generados
 
-Después del SQL entregar únicamente:
+Cada cuento completo debe incluir:
 
-### Imágenes
+- una portada final en WebP
+- una ilustración final en WebP por cada bloque
+- todos los archivos guardados dentro del proyecto
 
-Lista de archivos.
+Después del SQL también se entrega la lista de rutas instaladas.
 
 ### Sonidos nuevos
 
 Solo si el cuento creó alguno.
 
-No generar imágenes.
-
 No generar sonidos.
 
-Únicamente sus nombres.
+Los sonidos se registran en el SQL y únicamente se listan sus archivos.
 
 ---
 
@@ -389,6 +389,16 @@ Nunca cortar una frase entre bloques.
 
 Todos los bloques tienen imagen.
 
+## Portada obligatoria
+
+Cada cuento debe tener una portada vertical y sin texto en:
+
+```
+/images/portadas/[slug].webp
+```
+
+La misma ruta debe guardarse en `stories.portada_url`.
+
 Formato obligatorio:
 
 ```
@@ -443,6 +453,8 @@ npm run images:webp -- el-pez-globo-que-aprendio-a-respirar
 El comando convierte las imágenes de esa carpeta a WebP, valida que cada archivo generado se pueda leer y únicamente después elimina el original. Si una conversión falla, conserva el archivo fuente para que pueda corregirse. No modifica otros cuentos.
 
 Antes de ejecutar el SQL, comprobar que las rutas `imagen_url` terminan en `.webp` y que la carpeta contiene únicamente los WebP finales.
+
+La portada también debe convertirse a WebP y comprobarse contra `portada_url`.
 
 ---
 

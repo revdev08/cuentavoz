@@ -60,6 +60,9 @@ const ETIQUETAS: Record<string, string> = {
   nombre_gota: "¿Cómo quieres llamar a la gota de tinta?",
   color_tinta: "¿De qué color es la tinta?",
   dibujo_favorito: "¿En qué se convirtió la gota al final?",
+  nombre_copo: "¿Cómo quieres llamar al pequeño copo de nieve?",
+  color_bufanda: "¿De qué color es la bufanda?",
+  nombre_invernadero: "¿Cómo se llama el invernadero del tejado?",
   nombre_cuchara: "¿Cómo se llama la cuchara de madera?",
   nombre_cuchara_nueva: "¿Cómo se llama la cuchara nueva?",
   color_cuchara_nueva: "¿De qué color es la cuchara nueva?",
@@ -114,7 +117,6 @@ const ETIQUETAS: Record<string, string> = {
   nombre_alpaca: "¿Cómo se llama la alpaca?",
   color_manta: "¿De qué color es su manta?",
   nombre_pueblo_montana: "¿Cómo se llama el pueblo de la montaña?",
-  nombre_pueblo: "¿Cómo se llama el pueblo?",
 };
 
 // Red de seguridad para variable_key que no tengan pregunta propia en
@@ -183,7 +185,7 @@ export function StoryPlayer({
     if (sesionExistente) return sesionExistente.variablesUsadas;
     const iniciales: Record<string, string> = {};
     for (const v of variables) {
-      if (v.variable_key === "nombre_niño" && hijos[0]) {
+      if ((v.variable_key === "nombre_niño" || v.variable_key === "nombre_nino") && hijos[0]) {
         iniciales[v.variable_key] = hijos[0].nombre;
       } else if (v.variable_key === "color_favorito" && hijos[0]?.color_favorito) {
         iniciales[v.variable_key] = hijos[0].color_favorito;
@@ -232,6 +234,28 @@ export function StoryPlayer({
     () => (bloqueActual ? sustituirVariables(bloqueActual.texto_bloque, valoresConArticulos) : ""),
     [bloqueActual, valoresConArticulos]
   );
+
+  function seleccionarProtagonista(id: string) {
+    setHijoId(id);
+    const perfil = hijos.find((h) => h.id === id);
+    if (!perfil) return;
+    setValores((actuales) => {
+      const siguientes = { ...actuales };
+      // Los cuentos nuevos usan nombre_nino (sin tilde) y algunos cuentos
+      // anteriores nombre_niño. Solo completamos esas claves explícitas:
+      // nombre_objeto/nombre_animal pertenecen a personajes del cuento.
+      if (variables.some((v) => v.variable_key === "nombre_nino")) {
+        siguientes.nombre_nino = perfil.nombre;
+      }
+      if (variables.some((v) => v.variable_key === "nombre_niño")) {
+        siguientes.nombre_niño = perfil.nombre;
+      }
+      if (perfil.color_favorito && variables.some((v) => v.variable_key === "color_favorito")) {
+        siguientes.color_favorito = perfil.color_favorito;
+      }
+      return siguientes;
+    });
+  }
 
   // Guarda en qué bloque va cada vez que avanza (o retrocede), para que
   // "Últimos escuchados" en el dashboard pueda mostrar progreso real y
@@ -322,7 +346,7 @@ export function StoryPlayer({
               </span>
               <select
                 value={hijoId}
-                onChange={(e) => setHijoId(e.target.value)}
+                onChange={(e) => seleccionarProtagonista(e.target.value)}
                 className="w-full rounded-xl border border-pergamino-100 bg-white px-4 py-2 dark:border-tinta-600 dark:bg-tinta-800 dark:text-pergamino-50"
               >
                 {hijos.map((h) => (

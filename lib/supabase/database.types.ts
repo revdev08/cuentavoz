@@ -190,8 +190,10 @@ export type Database = {
           proveedor: "mercadopago" | "lemonsqueezy";
           estado: string;
           plan: string;
+          mp_preapproval_id: string | null;
           fecha_renovacion: string | null;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -199,8 +201,10 @@ export type Database = {
           proveedor: "mercadopago" | "lemonsqueezy";
           estado?: string;
           plan: string;
+          mp_preapproval_id?: string | null;
           fecha_renovacion?: string | null;
           created_at?: string;
+          updated_at?: string;
         };
         Update: Partial<
           Database["public"]["Tables"]["subscriptions"]["Insert"]

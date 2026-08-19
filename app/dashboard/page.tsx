@@ -6,10 +6,15 @@ import { SidebarNav } from "@/components/SidebarNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { EscenaLecturaNocturna } from "@/components/EscenaLecturaNocturna";
 import { BibliotecaGrid } from "@/components/BibliotecaGrid";
+import { ProtagonistasPanel } from "@/components/ProtagonistasPanel";
 import { Medallon } from "@/components/Medallon";
 import { estimarMinutosLectura, formatearMinSeg } from "@/lib/texto/tiempoLectura";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams?: { checkout?: string };
+}) {
   const { userId } = auth();
   const supabase = createServiceRoleClient();
 
@@ -101,10 +106,16 @@ export default async function DashboardPage() {
   const nombreFamilia = family?.clerk_user_id ? "Tu familia" : "Tu familia";
 
   return (
-    <div className="flex min-h-screen bg-pergamino-50 dark:bg-[#0B0A17]">
+    <div className="flex min-h-screen bg-[#F7EEDC] dark:bg-[#0B0A17]">
       <SidebarNav nombreFamilia={nombreFamilia} />
 
-      <main className="flex-1 px-5 py-6 sm:px-8 sm:py-8 lg:px-12">
+      <main className="relative min-w-0 flex-1 overflow-hidden px-5 py-6 sm:px-8 sm:py-8 lg:px-10 xl:px-14">
+        <div aria-hidden className="pointer-events-none absolute -right-40 top-[540px] h-[520px] w-[520px] rounded-full bg-esmeralda-300/15 blur-3xl dark:bg-esmeralda-500/5" />
+        {searchParams?.checkout === "pendiente" && (
+          <div className="relative mb-5 rounded-2xl border border-oro-400/40 bg-oro-100 px-5 py-4 text-sm text-tinta-900 shadow-sm dark:bg-oro-500/10 dark:text-pergamino-50">
+            Recibimos tu regreso desde Mercado Pago. Tu plan se activará cuando Mercado Pago confirme la suscripción; puedes recargar esta página en unos segundos.
+          </div>
+        )}
         {/* Barra superior solo en móvil -- en desktop esta info ya vive en el sidebar */}
         <div className="mb-6 flex items-center justify-between md:hidden">
           <Link href="/dashboard" className="flex items-center gap-2">
@@ -154,23 +165,27 @@ export default async function DashboardPage() {
             </a>
             {!esPremium && (
               <Link
-                href="/precios"
+                href="/api/checkout/mercadopago?plan=mensual"
                 className="mt-4 block font-display text-sm italic text-pergamino-50/60 underline decoration-oro-400 decoration-1 underline-offset-4 transition hover:text-oro-300"
               >
-                Ver la biblioteca completa desde $19.900/mes →
+                Ver la biblioteca completa desde $60.000/mes →
               </Link>
             )}
           </div>
         </section>
 
         {/* ---------- Últimos escuchados ---------- */}
-        <section id="escuchados" className="mb-12">
-          <h2 className="mb-6 flex items-center gap-2 font-display text-2xl italic text-tinta-900 dark:text-pergamino-50">
-            Últimos escuchados <span aria-hidden className="text-lg text-oro-400">✦</span>
-          </h2>
+        <section id="escuchados" className="relative mb-16 scroll-mt-8">
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-oro-700 dark:text-oro-300">La historia continúa</p>
+              <h2 className="mt-1 font-display text-3xl italic text-tinta-900 dark:text-pergamino-50">Volvamos a donde quedaron</h2>
+            </div>
+            {escuchados.length > 0 && <span className="hidden text-xs font-semibold text-tinta-900/40 sm:block dark:text-pergamino-50/40">Desliza para ver más →</span>}
+          </div>
 
           {escuchados.length > 0 ? (
-            <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 scrollbar-hide">
+            <div className="flex snap-x snap-mandatory gap-5 overflow-x-auto pb-5 pt-1 scrollbar-hide">
               {escuchados.map(({ sesion, cuento, hijo, minutosTotales, minutosTranscurridos, fraccion }) => (
                 <Link
                   key={sesion.id}
@@ -179,32 +194,33 @@ export default async function DashboardPage() {
                       ? `/story/${cuento.id}`
                       : `/story/${cuento.id}?continuar=${sesion.child_profile_id}`
                   }
-                  className="group relative flex w-[340px] shrink-0 snap-start items-center gap-4 overflow-hidden rounded-2xl border border-pergamino-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-tinta-800/50 dark:bg-tinta-900/40"
+                  className="group relative flex w-[310px] shrink-0 snap-start items-center gap-4 overflow-hidden rounded-[26px] border border-white/80 bg-white/75 p-3.5 shadow-[0_16px_45px_rgba(67,43,24,0.1)] backdrop-blur transition hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(67,43,24,0.16)] sm:w-[360px] dark:border-white/10 dark:bg-white/[0.05]"
                 >
-                  <div className="relative h-20 w-28 shrink-0 overflow-hidden rounded-xl">
+                  <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-[18px] shadow-md">
                     <img 
                       src={cuento.portada_url || `/images/portadas/gota-tinta.png`} 
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-110" 
                       alt="" 
                     />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-sm text-tinta-900 shadow-sm backdrop-blur pl-0.5">
+                    <div className="absolute inset-0 flex items-center justify-center bg-tinta-950/15 transition group-hover:bg-tinta-950/25">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 pl-0.5 text-sm text-tinta-900 shadow-lg backdrop-blur transition group-hover:scale-110">
                         ▶
                       </span>
                     </div>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-semibold text-tinta-900 dark:text-pergamino-50">
+                    <p className="line-clamp-2 font-display text-lg font-semibold italic leading-tight text-tinta-900 dark:text-pergamino-50">
                       {cuento.titulo}
                     </p>
-                    <div className="mt-3 h-1 w-full overflow-hidden rounded-full bg-pergamino-200 dark:bg-tinta-800">
+                    <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-tinta-900/40 dark:text-pergamino-50/40">Leyendo con {hijo?.nombre || "tu familia"}</p>
+                    <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-pergamino-200 dark:bg-white/10">
                       <div
                         className="h-full rounded-full bg-oro-400"
                         style={{ width: `${fraccion * 100}%` }}
                       />
                     </div>
-                    <div className="mt-1.5 flex items-center justify-between text-[10px] font-medium text-tinta-900/50 dark:text-pergamino-50/50">
-                      <span>{hijo?.nombre}</span>
+                    <div className="mt-2 flex items-center justify-between text-[10px] font-semibold text-tinta-900/45 dark:text-pergamino-50/45">
+                      <span>{Math.round(fraccion * 100)}% leído</span>
                       <span>
                         {formatearMinSeg(minutosTranscurridos)} / {formatearMinSeg(minutosTotales)}
                       </span>
@@ -214,17 +230,20 @@ export default async function DashboardPage() {
               ))}
             </div>
           ) : (
-            <p className="rounded-2xl border border-dashed border-pergamino-300 bg-white/60 px-6 py-8 text-center text-sm text-tinta-900/60 dark:border-tinta-700 dark:bg-tinta-900/30 dark:text-pergamino-50/60">
-              Todavía no han empezado ningún cuento -- ¡el primero está esperando abajo!
-            </p>
+            <div className="flex flex-col items-center justify-between gap-5 rounded-[28px] border border-dashed border-oro-400/45 bg-gradient-to-r from-white/70 to-oro-100/50 px-7 py-8 text-center sm:flex-row sm:text-left dark:from-white/5 dark:to-oro-500/5">
+              <div><p className="font-display text-xl italic text-tinta-900 dark:text-pergamino-50">Su primera historia está esperando</p><p className="mt-1 text-sm text-tinta-900/50 dark:text-pergamino-50/50">Elijan una portada juntos y hagan de esta noche un recuerdo.</p></div>
+              <a href="#biblioteca" className="shrink-0 rounded-full bg-tinta-950 px-6 py-3 text-xs font-bold text-white transition hover:-translate-y-0.5 dark:bg-oro-400 dark:text-tinta-950">Elegir un cuento ↓</a>
+            </div>
           )}
         </section>
 
         {/* ---------- Biblioteca ---------- */}
-        <section id="biblioteca" className="mb-10">
-          <h2 className="mb-4 flex items-center gap-2 font-display text-xl italic text-tinta-900 dark:text-pergamino-50">
-            Biblioteca <span aria-hidden>📚</span>
-          </h2>
+        <section id="biblioteca" className="relative mb-20 scroll-mt-8">
+          <div className="mb-7 max-w-2xl">
+            <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-esmeralda-700 dark:text-esmeralda-300">Elijan la próxima aventura</p>
+            <h2 className="mt-1 font-display text-4xl italic text-tinta-900 dark:text-pergamino-50">Una biblioteca para leer juntos</h2>
+            <p className="mt-2 text-sm leading-relaxed text-tinta-900/55 dark:text-pergamino-50/55">Busquen por título, exploren una emoción o guarden las historias que quieran volver a escuchar.</p>
+          </div>
 
           {cuentos && cuentos.length > 0 ? (
             <BibliotecaGrid
@@ -244,38 +263,16 @@ export default async function DashboardPage() {
         </section>
 
         {/* ---------- Protagonistas ---------- */}
-        <section id="protagonistas" className="mb-10">
-          <h2 className="mb-4 flex items-center gap-2 font-display text-xl italic text-tinta-900 dark:text-pergamino-50">
-            Protagonistas <span aria-hidden>👥</span>
-          </h2>
+        <section id="protagonistas" className="relative mb-10 scroll-mt-8 overflow-hidden rounded-[32px] bg-[#203B32] px-6 py-8 shadow-[0_24px_70px_rgba(25,49,41,0.2)] sm:px-9 sm:py-10 dark:bg-[#141E1B]">
+          <div aria-hidden className="absolute -right-16 -top-20 h-64 w-64 rounded-full border border-white/10" />
+          <div aria-hidden className="absolute -right-6 -top-8 h-44 w-44 rounded-full border border-oro-300/15" />
+          <div className="relative mb-7 max-w-xl">
+            <p className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-oro-300">Cada nombre cambia la historia</p>
+            <h2 className="mt-1 font-display text-3xl italic text-white">¿Quién será protagonista esta noche?</h2>
+            <p className="mt-2 text-sm text-white/55">Cuentavoz recuerda para quién leen y convierte cada aventura en algo propio.</p>
+          </div>
 
-          {hijos && hijos.length > 0 ? (
-            <div className="flex flex-wrap gap-4">
-              {hijos.map((h) => (
-                <div
-                  key={h.id}
-                  className="flex w-36 flex-col items-center gap-2 rounded-2xl border border-pergamino-200 bg-white px-4 py-5 text-center dark:border-tinta-700 dark:bg-tinta-900"
-                >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-oro-300 font-display text-lg font-semibold text-white dark:bg-oro-500">
-                    {h.nombre.charAt(0).toUpperCase()}
-                  </span>
-                  <p className="font-display italic text-tinta-900 dark:text-pergamino-50">
-                    {h.nombre}
-                  </p>
-                  {h.edad && (
-                    <span className="text-[10px] uppercase tracking-wide text-tinta-900/45 dark:text-pergamino-50/45">
-                      {h.edad} años
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="rounded-2xl border border-dashed border-pergamino-300 bg-white/60 px-6 py-8 text-center text-sm text-tinta-900/60 dark:border-tinta-700 dark:bg-tinta-900/30 dark:text-pergamino-50/60">
-              Todavía nadie protagoniza un cuento aquí -- agrega el nombre de tu hijo
-              o hija para que aparezca dentro de sus propias historias.
-            </p>
-          )}
+          <ProtagonistasPanel perfilesIniciales={hijos ?? []} familyId={family!.id} />
         </section>
       </main>
     </div>

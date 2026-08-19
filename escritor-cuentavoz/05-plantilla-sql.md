@@ -93,7 +93,7 @@ begin
             '[slug]',
             '2-7 años',
             true,
-            null
+            '/images/portadas/[slug].webp'
         )
 
         returning id
@@ -376,6 +376,12 @@ Cada bloque representa una ilustración distinta.
 # Assets
 
 Después del SQL.
+
+## Portada
+
+```text
+/images/portadas/[slug].webp
+```
 
 ## Imágenes
 

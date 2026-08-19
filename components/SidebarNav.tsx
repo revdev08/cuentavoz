@@ -4,11 +4,10 @@ import { Medallon } from "@/components/Medallon";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const ITEMS = [
-  { href: "#inicio", icono: "🏠", etiqueta: "Inicio", activo: true },
-  { href: "#biblioteca", icono: "📚", etiqueta: "Biblioteca" },
-  { href: "#escuchados", icono: "🎧", etiqueta: "Escuchados" },
-  { href: "#biblioteca", icono: "❤️", etiqueta: "Favoritos" },
-  { href: "#protagonistas", icono: "👥", etiqueta: "Protagonistas" },
+  { href: "#inicio", icono: "⌂", etiqueta: "Inicio", activo: true },
+  { href: "#escuchados", icono: "▶", etiqueta: "Seguir leyendo" },
+  { href: "#biblioteca", icono: "▤", etiqueta: "Biblioteca" },
+  { href: "#protagonistas", icono: "✦", etiqueta: "Protagonistas" },
 ];
 
 /**
@@ -21,43 +20,44 @@ const ITEMS = [
  */
 export function SidebarNav({ nombreFamilia }: { nombreFamilia: string }) {
   return (
-    <aside className="sticky top-0 h-[100dvh] overflow-y-auto hidden w-64 shrink-0 flex-col border-r border-pergamino-200 bg-white px-5 py-8 dark:border-tinta-800/50 dark:bg-[#0B0A17] md:flex">
-      <Link href="/dashboard" className="flex items-center gap-2.5 px-2">
-        <Medallon size={38} />
+    <aside className="sticky top-0 hidden h-[100dvh] w-[248px] shrink-0 flex-col overflow-y-auto border-r border-[#D8C6A8]/55 bg-[#F7EEDC] px-5 py-7 shadow-[12px_0_40px_rgba(76,50,30,0.04)] dark:border-white/5 dark:bg-[#0B0A17] md:flex">
+      <Link href="/dashboard" className="flex items-center gap-3 rounded-2xl px-2 py-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-oro-300/30">
+        <Medallon size={42} />
         <div>
           <p className="font-display text-xl italic leading-tight text-tinta-900 dark:text-pergamino-50">
             Cuentavoz
           </p>
-          <p className="text-[10px] leading-tight text-tinta-900/50 dark:text-pergamino-50/45">
-            Historias que se escuchan,
-            <br />
-            recuerdos que perduran.
+          <p className="mt-0.5 font-mono text-[8px] font-semibold uppercase tracking-[0.13em] text-tinta-900/40 dark:text-pergamino-50/40">
+            Biblioteca familiar
           </p>
         </div>
       </Link>
 
-      <nav className="mt-12 flex flex-1 flex-col gap-2">
+      <div className="mx-2 mt-8 h-px bg-gradient-to-r from-transparent via-oro-600/25 to-transparent" />
+      <p className="mb-3 mt-8 px-3 font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-tinta-900/35 dark:text-pergamino-50/30">Esta noche</p>
+      <nav className="flex flex-1 flex-col gap-1.5">
         {ITEMS.map((item) => (
           <a
             key={item.etiqueta}
             href={item.href}
-            className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
+            className={`group flex items-center gap-3 rounded-2xl px-3 py-3 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-oro-300/25 ${
               item.activo
-                ? "border border-oro-500 bg-oro-500/5 text-oro-700 shadow-[0_0_15px_rgba(231,162,61,0.15)] dark:text-oro-300"
-                : "border border-transparent text-tinta-900/60 hover:bg-pergamino-100 hover:text-tinta-900 dark:text-pergamino-50/55 dark:hover:bg-tinta-800/50 dark:hover:text-pergamino-50"
+                ? "bg-tinta-950 text-pergamino-50 shadow-[0_10px_24px_rgba(20,18,36,0.14)] dark:bg-oro-400 dark:text-tinta-950"
+                : "text-tinta-900/55 hover:bg-white/70 hover:text-tinta-900 dark:text-pergamino-50/50 dark:hover:bg-white/5 dark:hover:text-pergamino-50"
             }`}
           >
-            <span aria-hidden className="text-lg">{item.icono}</span>
+            <span aria-hidden className={`flex h-7 w-7 items-center justify-center rounded-xl text-sm ${item.activo ? "bg-white/10 dark:bg-tinta-950/10" : "bg-white/55 group-hover:bg-white dark:bg-white/5"}`}>{item.icono}</span>
             {item.etiqueta}
           </a>
         ))}
       </nav>
 
-      <div className="mt-6 flex flex-col gap-4">
-        <div className="flex items-center justify-between">
+      <div className="mt-6 flex flex-col gap-3">
+        <div className="flex items-center justify-between px-2">
+          <span className="text-[10px] font-semibold text-tinta-900/40 dark:text-pergamino-50/35">Apariencia</span>
           <ThemeToggle />
         </div>
-        <div className="flex items-center gap-3 rounded-2xl border border-pergamino-200 bg-pergamino-50 p-2 dark:border-tinta-800/50 dark:bg-tinta-900/30">
+        <div className="flex items-center gap-3 rounded-2xl border border-[#D8C6A8]/60 bg-white/65 p-2.5 shadow-sm dark:border-white/10 dark:bg-white/5">
           <UserButton afterSignOutUrl="/" />
           <span className="truncate text-sm font-medium text-tinta-900 dark:text-pergamino-50">
             {nombreFamilia}

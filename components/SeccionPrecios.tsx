@@ -8,24 +8,27 @@ const PLANES = [
     periodo: "",
     items: ["2-3 cuentos completos", "Personalización de personajes", "Modo escucha por voz"],
     cta: "Crear cuenta gratis",
+    href: "/sign-up",
     destacado: false,
   },
   {
     tag: "Mensual",
     nombre: "Premium",
-    precio: "$19.900",
+    precio: "$60.000",
     periodo: "COP / mes",
     items: ["Toda la biblioteca de cuentos", "Nuevos cuentos cada mes", "Sin permanencia mínima"],
     cta: "Empezar Premium",
+    href: "/api/checkout/mercadopago?plan=mensual",
     destacado: false,
   },
   {
-    tag: "El más elegido",
-    nombre: "Premium anual",
+    tag: "Mejor valor",
+    nombre: "Premium semestral",
     precio: "$149.900",
-    periodo: "COP / año · ahorras 37%",
-    items: ["Todo lo del plan mensual", "Equivale a $12.492 COP/mes", "Un solo pago al año"],
-    cta: "Empezar Premium anual",
+    periodo: "COP / 6 meses",
+    items: ["Todo lo del plan mensual", "Equivale a $24.833 COP/mes", "Un cobro cada seis meses"],
+    cta: "Empezar Premium semestral",
+    href: "/api/checkout/mercadopago?plan=semestral",
     destacado: true,
   },
 ];
@@ -98,7 +101,7 @@ export function SeccionPrecios() {
               ))}
             </ul>
             <Link
-              href="/sign-up"
+              href={plan.href}
               className={`block rounded-full py-3 text-center text-sm font-extrabold transition ${
                 plan.destacado
                   ? "bg-oro-500 text-tinta-950 hover:bg-oro-300"
