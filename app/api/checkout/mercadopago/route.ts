@@ -7,6 +7,7 @@ import {
   getMpToken,
 } from "@/lib/mercadopago";
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { tieneAccesoPremium } from "@/lib/suscripciones/acceso";
 
 export async function GET(req: Request) {
   try {
@@ -60,8 +61,20 @@ export async function GET(req: Request) {
       if (error) throw error;
     }
 
-    if (family.plan === "premium") {
+    const { data: suscripcionActual, error: suscripcionActualError } = await supabase
+      .from("subscriptions")
+      .select("estado, fecha_renovacion")
+      .eq("family_id", family.id)
+      .eq("proveedor", "mercadopago")
+      .maybeSingle();
+    if (suscripcionActualError) throw suscripcionActualError;
+
+    if (tieneAccesoPremium(family.plan, suscripcionActual)) {
       return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
+    if (family.plan === "premium") {
+      const { error } = await supabase.from("families").update({ plan: "inactive" }).eq("id", family.id);
+      if (error) throw error;
     }
 
     const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? url.origin).replace(/\/$/, "");

@@ -108,6 +108,11 @@ El checkout usa `/api/checkout/mercadopago?plan=mensual` o
 `?plan=semestral`. El webhook valida la firma, vuelve a consultar la
 preaprobación en Mercado Pago y solo después cambia `families.plan`.
 
+Si una suscripción se cancela, no se corta el acceso inmediatamente. El
+webhook conserva `fecha_renovacion` y la familia puede seguir entrando hasta
+el final del periodo ya pagado. Después de esa fecha, dashboard, lector y
+checkout recalculan el acceso y cambian la familia a `inactive`.
+
 ### Suscripción privada de desarrollo
 
 Existe un plan privado de $2.000 COP mensuales para probar el flujo completo.

@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { esPlanKey, obtenerSuscripcion, PLANES } from "@/lib/mercadopago";
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { periodoSigueVigente } from "@/lib/suscripciones/acceso";
 
 type WebhookBody = {
   type?: string;
@@ -78,6 +79,18 @@ export async function POST(req: Request) {
     if (familyError) throw familyError;
     if (!family) return new NextResponse("Familia no encontrada", { status: 404 });
 
+    const { data: existingSubscription, error: existingError } = await supabase
+      .from("subscriptions")
+      .select("fecha_renovacion")
+      .eq("family_id", familyId)
+      .eq("proveedor", "mercadopago")
+      .maybeSingle();
+    if (existingError) throw existingError;
+
+    // Mercado Pago puede omitir next_payment_date al cancelar. En ese caso
+    // conservamos el fin del periodo que ya habíamos registrado.
+    const fechaFin = mpSubscription.next_payment_date ?? existingSubscription?.fecha_renovacion ?? null;
+
     const { error: subscriptionError } = await supabase.from("subscriptions").upsert(
       {
         family_id: familyId,
@@ -85,7 +98,7 @@ export async function POST(req: Request) {
         estado: mpSubscription.status,
         plan,
         mp_preapproval_id: mpSubscription.id,
-        fecha_renovacion: mpSubscription.next_payment_date ?? null,
+        fecha_renovacion: fechaFin,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "family_id,proveedor" }
@@ -96,7 +109,8 @@ export async function POST(req: Request) {
       const { error } = await supabase.from("families").update({ plan: "premium" }).eq("id", familyId);
       if (error) throw error;
     } else if (["cancelled", "canceled"].includes(mpSubscription.status)) {
-      const { error } = await supabase.from("families").update({ plan: "inactive" }).eq("id", familyId);
+      const planFinal = periodoSigueVigente(fechaFin) ? "premium" : "inactive";
+      const { error } = await supabase.from("families").update({ plan: planFinal }).eq("id", familyId);
       if (error) throw error;
     }
 

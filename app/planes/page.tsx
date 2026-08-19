@@ -4,6 +4,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { SeccionPrecios } from "@/components/SeccionPrecios";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { emailPuedeUsarPlanDesarrollador } from "@/lib/mercadopago";
+import { tieneAccesoPremium } from "@/lib/suscripciones/acceso";
 
 export default async function PlanesPage({
   searchParams,
@@ -35,16 +36,21 @@ export default async function PlanesPage({
     await supabase.from("families").update({ email }).eq("id", family.id);
   }
 
-  if (family?.plan === "premium") redirect("/dashboard");
-
   const { data: subscription } = family
     ? await supabase
         .from("subscriptions")
-        .select("estado, plan")
+        .select("estado, plan, fecha_renovacion")
         .eq("family_id", family.id)
         .eq("proveedor", "mercadopago")
         .maybeSingle()
     : { data: null };
+
+  if (family && tieneAccesoPremium(family.plan, subscription)) {
+    redirect("/dashboard");
+  }
+  if (family?.plan === "premium") {
+    await supabase.from("families").update({ plan: "inactive" }).eq("id", family.id);
+  }
 
   return (
     <div className="min-h-screen bg-pergamino-50 dark:bg-tinta-950">

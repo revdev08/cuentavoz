@@ -10,6 +10,7 @@ import { BibliotecaGrid } from "@/components/BibliotecaGrid";
 import { ProtagonistasPanel } from "@/components/ProtagonistasPanel";
 import { Medallon } from "@/components/Medallon";
 import { estimarMinutosLectura, formatearMinSeg } from "@/lib/texto/tiempoLectura";
+import { tieneAccesoPremium } from "@/lib/suscripciones/acceso";
 
 export default async function DashboardPage() {
   const { userId } = auth();
@@ -38,7 +39,19 @@ export default async function DashboardPage() {
     family = { ...family, email };
   }
 
-  if (family?.plan !== "premium") {
+  const { data: suscripcionAcceso } = family
+    ? await supabase
+        .from("subscriptions")
+        .select("estado, fecha_renovacion")
+        .eq("family_id", family.id)
+        .eq("proveedor", "mercadopago")
+        .maybeSingle()
+    : { data: null };
+
+  if (!family || !tieneAccesoPremium(family.plan, suscripcionAcceso)) {
+    if (family?.plan === "premium") {
+      await supabase.from("families").update({ plan: "inactive" }).eq("id", family.id);
+    }
     redirect("/planes");
   }
 

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { StoryPlayer } from "@/components/StoryPlayer";
+import { tieneAccesoPremium } from "@/lib/suscripciones/acceso";
 
 export default async function StoryPage({
   params,
@@ -33,7 +34,19 @@ export default async function StoryPage({
     supabase.from("families").select("id, plan").eq("clerk_user_id", userId!).maybeSingle(),
   ]);
 
-  if (familia?.plan !== "premium") {
+  const { data: suscripcionAcceso } = familia
+    ? await supabase
+        .from("subscriptions")
+        .select("estado, fecha_renovacion")
+        .eq("family_id", familia.id)
+        .eq("proveedor", "mercadopago")
+        .maybeSingle()
+    : { data: null };
+
+  if (!familia || !tieneAccesoPremium(familia.plan, suscripcionAcceso)) {
+    if (familia?.plan === "premium") {
+      await supabase.from("families").update({ plan: "inactive" }).eq("id", familia.id);
+    }
     redirect("/planes");
   }
 
