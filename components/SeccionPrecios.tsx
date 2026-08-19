@@ -23,7 +23,26 @@ const PLANES = [
   },
 ];
 
-export function SeccionPrecios() {
+const PLAN_DESARROLLADOR = {
+  tag: "Acceso privado",
+  nombre: "Plan desarrollador",
+  precio: "$2.000",
+  periodo: "COP / mes",
+  items: ["Flujo completo de pago", "Acceso a toda la biblioteca", "Solo para correos autorizados"],
+  cta: "Probar suscripción",
+  href: "/api/checkout/mercadopago?plan=desarrollador",
+  destacado: false,
+};
+
+export function SeccionPrecios({
+  mostrarDesarrollador = false,
+}: {
+  mostrarDesarrollador?: boolean;
+}) {
+  const planesVisibles = mostrarDesarrollador
+    ? [...PLANES, PLAN_DESARROLLADOR]
+    : PLANES;
+
   return (
     <section id="precios" className="mx-auto max-w-4xl px-6 py-24 sm:px-8">
       <div className="mx-auto mb-14 max-w-xl text-center">
@@ -33,8 +52,12 @@ export function SeccionPrecios() {
         </h2>
       </div>
 
-      <div className="mx-auto grid max-w-2xl gap-6 sm:grid-cols-2">
-        {PLANES.map((plan) => (
+      <div
+        className={`mx-auto grid gap-6 sm:grid-cols-2 ${
+          mostrarDesarrollador ? "max-w-4xl lg:grid-cols-3" : "max-w-2xl"
+        }`}
+      >
+        {planesVisibles.map((plan) => (
           <div
             key={plan.nombre}
             className={`rounded-[20px] border-[1.5px] p-8 ${

@@ -108,9 +108,10 @@ preaprobación en Mercado Pago y solo después cambia `families.plan`.
 
 ### Suscripción privada de desarrollo
 
-Existe un plan oculto de $2.000 COP mensuales para probar el flujo completo.
-No aparece en la landing ni en `/planes`. Configura uno o varios correos
-principales de Clerk, separados por comas, exclusivamente en el servidor:
+Existe un plan privado de $2.000 COP mensuales para probar el flujo completo.
+No aparece en la landing ni para usuarios normales. En `/planes` solo se
+muestra cuando el correo principal de Clerk está autorizado. Configura uno o
+varios correos separados por comas, exclusivamente en el servidor:
 
 ```env
 MERCADOPAGO_DEV_EMAILS=dev1@cuentavoz.com,dev2@cuentavoz.com

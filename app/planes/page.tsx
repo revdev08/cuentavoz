@@ -1,8 +1,9 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { AppHeader } from "@/components/AppHeader";
 import { SeccionPrecios } from "@/components/SeccionPrecios";
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { emailPuedeUsarPlanDesarrollador } from "@/lib/mercadopago";
 
 export default async function PlanesPage({
   searchParams,
@@ -11,6 +12,10 @@ export default async function PlanesPage({
 }) {
   const { userId } = auth();
   if (!userId) redirect("/sign-in");
+
+  const user = await currentUser();
+  const email = user?.primaryEmailAddress?.emailAddress ?? "";
+  const mostrarDesarrollador = emailPuedeUsarPlanDesarrollador(email);
 
   const supabase = createServiceRoleClient();
   let { data: family } = await supabase
@@ -49,7 +54,7 @@ export default async function PlanesPage({
             tendrás acceso al dashboard. Recarga esta página en unos segundos.
           </div>
         )}
-        <SeccionPrecios />
+        <SeccionPrecios mostrarDesarrollador={mostrarDesarrollador} />
       </main>
     </div>
   );
