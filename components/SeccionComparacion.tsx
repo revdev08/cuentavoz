@@ -15,6 +15,15 @@ export function SeccionComparacion() {
   return (
     <section className="relative overflow-hidden bg-tinta-950 px-6 py-24 text-pergamino-50 sm:px-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(180,72,90,0.16),transparent_27%),radial-gradient(circle_at_84%_18%,rgba(106,76,140,0.22),transparent_30%)]" />
+      {/* La ilustración pertenece al escenario: se pierde suavemente en el fondo,
+          no funciona como una tarjeta ni como un bloque independiente. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/landing/lectura-acompanada.webp"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute -bottom-10 -left-8 hidden w-[420px] max-w-[38vw] opacity-55 mix-blend-screen [mask-image:linear-gradient(to_top,black_45%,transparent_100%)] lg:block"
+      />
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.78fr_1.5fr] lg:items-center">
         <div className="mx-auto max-w-md text-center lg:mx-0 lg:text-left">
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-oro-300">Una lectura que se comparte</p>
@@ -25,8 +34,6 @@ export function SeccionComparacion() {
           <p className="mt-6 max-w-sm text-[16px] leading-relaxed text-pergamino-50/70 lg:mx-0">
             Cuentavoz conserva tu voz y la imaginación de tu hijo. Añade decisiones, sonidos y personajes que hacen suyo cada momento de lectura.
           </p>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/landing/lectura-acompanada.webp" alt="Libros, una taza caliente y un marcapáginas con forma de zorro" className="mx-auto mt-8 w-full max-w-[320px] mix-blend-screen lg:mx-0" />
         </div>
 
         <div className="overflow-x-auto rounded-[1.6rem] border border-pergamino-50/10 bg-tinta-900/50 p-3 shadow-2xl shadow-black/20">

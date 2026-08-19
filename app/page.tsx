@@ -33,6 +33,15 @@ export default function HomePage() {
       {/* Portada: pantalla completa, siempre oscura -- como abrir un
           grimorio real, sin importar el tema del sitio. */}
       <section className="relative flex min-h-[100dvh] flex-col overflow-hidden bg-gradient-to-b from-tinta-900 via-tinta-800 to-tinta-900">
+        {/* Fondo pintado: reemplaza los libros SVG flotantes por una escena única. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/landing/hero-biblioteca-nocturna.webp"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-70"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(20,18,36,0.82),rgba(20,18,36,0.52)_50%,rgba(20,18,36,0.82)),linear-gradient(0deg,rgba(20,18,36,0.8),transparent_42%,rgba(20,18,36,0.45))]" />
         <AppHeader sobreOscuro absoluto>
           <nav className="hidden items-center gap-1 text-sm font-medium text-pergamino-50/70 md:flex">
             <a
@@ -79,30 +88,6 @@ export default function HomePage() {
             />
           ))}
         </div>
-
-        <LibroSimple
-          size={70}
-          colorIzq="#E7A23D"
-          colorDer="#B4485A"
-          className="libro-flotante absolute left-[8%] top-[22%] opacity-90"
-          style={{
-            ["--duracion-vuelo" as string]: "11s",
-            ["--deriva-x" as string]: "16px",
-            ["--deriva-y" as string]: "-14px",
-          }}
-        />
-        <LibroSimple
-          size={46}
-          colorIzq="#4C7A63"
-          colorDer="#E7A23D"
-          className="libro-flotante absolute right-[10%] top-[66%] opacity-80"
-          style={{
-            ["--duracion-vuelo" as string]: "8s",
-            ["--retraso-vuelo" as string]: "0.6s",
-            ["--deriva-x" as string]: "-14px",
-            ["--deriva-y" as string]: "12px",
-          }}
-        />
 
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
           <span className="mb-7 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.14em] text-oro-300">
