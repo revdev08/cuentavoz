@@ -5,12 +5,12 @@ const MP_API_URL = "https://api.mercadopago.com";
 export const PLANES = {
   mensual: {
     nombre: "Cuentavoz Premium mensual",
-    monto: 60_000,
+    monto: 39_900,
     frecuencia: 1,
   },
   semestral: {
     nombre: "Cuentavoz Premium semestral",
-    monto: 149_000,
+    monto: 119_000,
     frecuencia: 6,
   },
   desarrollador: {

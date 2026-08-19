@@ -4,7 +4,7 @@ const PLANES = [
   {
     tag: "Mensual",
     nombre: "Premium",
-    precio: "$60.000",
+    precio: "$39.900",
     periodo: "COP / mes",
     items: ["Toda la biblioteca de cuentos", "Nuevos cuentos cada mes", "Sin permanencia mínima"],
     cta: "Empezar Premium",
@@ -14,7 +14,7 @@ const PLANES = [
   {
     tag: "Mejor valor",
     nombre: "Premium semestral",
-    precio: "$149.900",
+    precio: "$119.900",
     periodo: "COP / 6 meses",
     items: ["Todo lo del plan mensual", "Equivale a $24.833 COP/mes", "Un cobro cada seis meses"],
     cta: "Empezar Premium semestral",
