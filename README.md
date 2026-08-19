@@ -106,6 +106,25 @@ El checkout usa `/api/checkout/mercadopago?plan=mensual` o
 `?plan=semestral`. El webhook valida la firma, vuelve a consultar la
 preaprobación en Mercado Pago y solo después cambia `families.plan`.
 
+### Suscripción privada de desarrollo
+
+Existe un plan oculto de $2.000 COP mensuales para probar el flujo completo.
+No aparece en la landing ni en `/planes`. Configura uno o varios correos
+principales de Clerk, separados por comas, exclusivamente en el servidor:
+
+```env
+MERCADOPAGO_DEV_EMAILS=dev1@cuentavoz.com,dev2@cuentavoz.com
+```
+
+Después de iniciar sesión con uno de esos correos, abre directamente:
+
+```text
+https://www.cuentavoz.com/api/checkout/mercadopago?plan=desarrollador
+```
+
+Un correo no autorizado recibe `404`, aunque conozca la URL. Esta variable
+nunca debe llevar el prefijo `NEXT_PUBLIC_`.
+
 ## 8. Íconos del PWA
 
 Agrega tus íconos reales en `public/icons/icon-192.png` y

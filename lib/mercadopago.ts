@@ -13,6 +13,11 @@ export const PLANES = {
     monto: 149_000,
     frecuencia: 6,
   },
+  desarrollador: {
+    nombre: "Cuentavoz Desarrollo",
+    monto: 2_000,
+    frecuencia: 1,
+  },
 } as const;
 
 export type PlanKey = keyof typeof PLANES;
@@ -37,6 +42,15 @@ export function getMpToken() {
 
 export function esPlanKey(value: string): value is PlanKey {
   return Object.prototype.hasOwnProperty.call(PLANES, value);
+}
+
+export function emailPuedeUsarPlanDesarrollador(email: string) {
+  const autorizados = (process.env.MERCADOPAGO_DEV_EMAILS ?? "")
+    .split(",")
+    .map((item) => item.trim().toLowerCase())
+    .filter(Boolean);
+
+  return autorizados.includes(email.trim().toLowerCase());
 }
 
 async function mpRequest<T>(path: string, init?: RequestInit): Promise<T> {

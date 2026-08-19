@@ -2,6 +2,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import {
   crearSuscripcion,
+  emailPuedeUsarPlanDesarrollador,
   esPlanKey,
   getMpToken,
 } from "@/lib/mercadopago";
@@ -29,6 +30,12 @@ export async function GET(req: Request) {
     const plan = url.searchParams.get("plan") ?? "mensual";
     if (!esPlanKey(plan)) {
       return new NextResponse('Plan inválido. Usa "mensual" o "semestral".', { status: 400 });
+    }
+
+    // El plan de pruebas nunca se anuncia. Una persona que descubra la URL
+    // recibe 404 salvo que su correo principal esté en la lista privada.
+    if (plan === "desarrollador" && !emailPuedeUsarPlanDesarrollador(email)) {
+      return new NextResponse("No encontrado", { status: 404 });
     }
 
     const supabase = createServiceRoleClient();
