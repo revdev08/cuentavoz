@@ -20,7 +20,7 @@ const CLAVES = [
   { icono: "▰", numero: "2–7", etiqueta: "años para acompañar" },
   { icono: "◌", numero: "2", etiqueta: "formas de activar sonidos" },
   { icono: "✦", numero: "14", etiqueta: "escenas en cada cuento" },
-  { icono: "♡", numero: "1", etiqueta: "momento para compartir" },
+  { icono: "♡", numero: "Incontables", etiqueta: "momentos para compartir" },
 ];
 
 export function SeccionMomentos() {

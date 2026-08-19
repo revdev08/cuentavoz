@@ -14,16 +14,16 @@ function Marca({ si, destacada = false }: { si: boolean; destacada?: boolean }) 
 export function SeccionComparacion() {
   return (
     <section className="relative overflow-hidden bg-tinta-950 px-6 py-24 text-pergamino-50 sm:px-8">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(180,72,90,0.16),transparent_27%),radial-gradient(circle_at_84%_18%,rgba(106,76,140,0.22),transparent_30%)]" />
-      {/* La ilustración pertenece al escenario: se pierde suavemente en el fondo,
-          no funciona como una tarjeta ni como un bloque independiente. */}
+      {/* Fondo de ancho completo: forma parte del ambiente de toda la sección. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/landing/lectura-acompanada.webp"
+        src="/images/landing/comparacion-biblioteca-nocturna.webp"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute -bottom-10 -left-8 hidden w-[420px] max-w-[38vw] opacity-55 mix-blend-screen [mask-image:linear-gradient(to_top,black_45%,transparent_100%)] lg:block"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-65"
       />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(20,18,36,0.9),rgba(20,18,36,0.57)_50%,rgba(20,18,36,0.78)),linear-gradient(0deg,rgba(20,18,36,0.8),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(180,72,90,0.16),transparent_27%),radial-gradient(circle_at_84%_18%,rgba(106,76,140,0.22),transparent_30%)]" />
       <div className="relative mx-auto grid max-w-7xl gap-14 lg:grid-cols-[0.78fr_1.5fr] lg:items-center">
         <div className="mx-auto max-w-md text-center lg:mx-0 lg:text-left">
           <p className="font-mono text-xs uppercase tracking-[0.14em] text-oro-300">Una lectura que se comparte</p>

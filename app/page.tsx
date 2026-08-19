@@ -174,17 +174,6 @@ export default function HomePage() {
 
         <SeccionComparacion />
 
-        {/* ================= CITA ================= */}
-        <section className="px-6 py-4 sm:px-8">
-          <div className="mx-auto max-w-xl border-l-2 border-baya-500 pl-6 text-left">
-            <p className="texto-iluminado font-display text-lg italic leading-relaxed text-tinta-900/80 dark:text-pergamino-50/80">
-              Cada cuento refuerza el vínculo afectivo y el desarrollo
-              cognitivo en la primera infancia. No es otra pantalla más: es
-              un momento que padres e hijos construyen con su propia voz.
-            </p>
-          </div>
-        </section>
-
         <SeccionMomentos />
 
         <SeccionVistaPrevia />
