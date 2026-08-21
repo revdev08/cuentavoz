@@ -7,6 +7,8 @@ const FILAS = [
   { rasgo: "Invita a pausar y conversar", papel: true, audiolibro: true, video: true, cuentavoz: true },
 ];
 
+const VERSION_RECURSOS_LANDING = "20260821";
+
 function Marca({ si, destacada = false }: { si: boolean; destacada?: boolean }) {
   return <span className={si ? destacada ? "text-pergamino-50" : "text-esmeralda-300" : "text-pergamino-50/25"}>{si ? "✓" : "—"}</span>;
 }
@@ -17,7 +19,7 @@ export function SeccionComparacion() {
       {/* Fondo de ancho completo: forma parte del ambiente de toda la sección. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/landing/comparacion-biblioteca-nocturna.webp"
+        src={`/images/landing/comparacion-biblioteca-nocturna.webp?v=${VERSION_RECURSOS_LANDING}`}
         alt=""
         aria-hidden
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-65"

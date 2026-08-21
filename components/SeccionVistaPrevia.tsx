@@ -16,6 +16,7 @@ const CUENTOS = [
 ] as const;
 
 const CATEGORIAS: Categoria[] = ["Todas", "Aventuras", "Naturaleza", "Momentos", "Misterio"];
+const VERSION_PORTADAS = "20260821";
 
 export function SeccionVistaPrevia() {
   const [categoria, setCategoria] = useState<Categoria>("Todas");
@@ -79,7 +80,11 @@ export function SeccionVistaPrevia() {
               <article key={cuento.titulo} className="group relative w-[148px] shrink-0 snap-start overflow-hidden rounded-[1.15rem] border border-pergamino-50/10 bg-tinta-800 shadow-[0_14px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-2 hover:border-oro-300/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.36)] sm:w-[174px] lg:w-[188px]">
                 <div className="relative aspect-[2/3] overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={cuento.imagen} alt={`Portada de ${cuento.titulo}`} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <img
+                    src={`${cuento.imagen}?v=${VERSION_PORTADAS}`}
+                    alt={`Portada de ${cuento.titulo}`}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-tinta-950 via-tinta-950/25 to-transparent" />
                   <span className="absolute left-3 top-3 rounded-full bg-tinta-950/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-oro-300 backdrop-blur">{cuento.tono}</span>
                 </div>

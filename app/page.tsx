@@ -12,6 +12,10 @@ import { SeccionPrecios } from "@/components/SeccionPrecios";
 import { SeccionPreguntas } from "@/components/SeccionPreguntas";
 import { SeccionMomentos } from "@/components/SeccionMomentos";
 
+// Cambiar esta versión cuando se reemplacen recursos estáticos de la landing.
+// Así una PWA instalada no conserva una respuesta anterior en caché.
+const VERSION_RECURSOS_LANDING = "20260821";
+
 const ESTRELLAS = [
   { left: "6%", top: "18%", size: 2, retraso: "0s" },
   { left: "14%", top: "42%", size: 1.6, retraso: "0.8s" },
@@ -36,7 +40,7 @@ export default function HomePage() {
         {/* Fondo pintado: reemplaza los libros SVG flotantes por una escena única. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/landing/hero-biblioteca-nocturna.webp"
+          src={`/images/landing/hero-biblioteca-nocturna.webp?v=${VERSION_RECURSOS_LANDING}`}
           alt=""
           aria-hidden
           className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center opacity-70"
