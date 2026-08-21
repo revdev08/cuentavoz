@@ -20,15 +20,47 @@ const VERSION_PORTADAS = "20260821";
 
 export function SeccionVistaPrevia() {
   const [categoria, setCategoria] = useState<Categoria>("Todas");
+  const [inicio, setInicio] = useState(0);
   const carrusel = useRef<HTMLDivElement>(null);
   const cuentos = categoria === "Todas" ? CUENTOS : CUENTOS.filter((cuento) => cuento.categoria === categoria);
+  const cuentosEscritorio = cuentos.slice(inicio, inicio + 6);
 
   useEffect(() => {
     carrusel.current?.scrollTo({ left: 0, behavior: "smooth" });
+    setInicio(0);
   }, [categoria]);
 
-  function desplazar(direccion: 1 | -1) {
+  function desplazarMovil(direccion: 1 | -1) {
     carrusel.current?.scrollBy({ left: direccion * 390, behavior: "smooth" });
+  }
+
+  function cambiarPagina(direccion: 1 | -1) {
+    const ultimoInicio = Math.max(0, cuentos.length - 6);
+    setInicio((actual) => {
+      if (direccion === 1) return actual >= ultimoInicio ? 0 : Math.min(actual + 6, ultimoInicio);
+      return actual <= 0 ? ultimoInicio : Math.max(actual - 6, 0);
+    });
+  }
+
+  function Portada({ cuento }: { cuento: (typeof CUENTOS)[number] }) {
+    return (
+      <article className="group relative min-w-0 overflow-hidden rounded-[1.15rem] border border-pergamino-50/10 bg-tinta-800 shadow-[0_14px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-2 hover:border-oro-300/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.36)]">
+        <div className="relative aspect-[2/3] overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${cuento.imagen}?v=${VERSION_PORTADAS}`}
+            alt={`Portada de ${cuento.titulo}`}
+            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-tinta-950 via-tinta-950/25 to-transparent" />
+          <span className="absolute left-3 top-3 rounded-full bg-tinta-950/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-oro-300 backdrop-blur">{cuento.tono}</span>
+        </div>
+        <div className="min-h-[82px] border-t border-pergamino-50/10 px-3.5 py-3">
+          <h3 className="line-clamp-2 font-display text-[17px] italic leading-[1.02] text-pergamino-50">{cuento.titulo}</h3>
+          <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.08em] text-pergamino-50/55">◷ {cuento.minutos} · 2–7 años</p>
+        </div>
+      </article>
+    );
   }
 
   return (
@@ -55,7 +87,7 @@ export function SeccionVistaPrevia() {
               onClick={() => setCategoria(opcion)}
               className={`shrink-0 rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.08em] transition ${
                 categoria === opcion
-                  ? "border-esmeralda-300 bg-esmeralda-400 text-tinta-950 shadow-[0_7px_20px_rgba(143,180,160,0.22)]"
+                  ? "border-oro-300 bg-oro-300 text-tinta-950 shadow-[0_7px_20px_rgba(231,162,61,0.28)]"
                   : "border-pergamino-50/15 bg-tinta-950/35 text-pergamino-50/65 hover:border-pergamino-50/35 hover:text-pergamino-50"
               }`}
             >
@@ -65,45 +97,40 @@ export function SeccionVistaPrevia() {
         </div>
 
         <div className="relative mt-10">
+          {/* Escritorio: una estantería, no un contenedor con scroll. */}
           <button
             type="button"
-            onClick={() => desplazar(-1)}
+            onClick={() => cambiarPagina(-1)}
             aria-label="Ver portadas anteriores"
-            className="absolute -left-3 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 rounded-full border border-pergamino-50/15 bg-tinta-950/80 text-xl text-pergamino-50 shadow-lg backdrop-blur transition hover:bg-ciruela-500 lg:grid lg:place-items-center"
+            className="absolute -left-5 top-[42%] z-10 hidden h-11 w-11 -translate-y-1/2 rounded-full border border-pergamino-50/20 bg-tinta-900 text-2xl text-pergamino-50 shadow-[0_10px_28px_rgba(0,0,0,0.34)] transition hover:scale-105 hover:border-oro-300/60 hover:text-oro-300 lg:grid lg:place-items-center"
           >
             ‹
           </button>
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-[1] hidden w-12 bg-gradient-to-r from-tinta-900 to-transparent md:block" />
-          <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-12 bg-gradient-to-l from-tinta-900 to-transparent" />
-          <div ref={carrusel} className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-1 pb-8 pt-2 scrollbar-hide sm:gap-4">
+          <div className="hidden grid-cols-6 gap-4 px-2 pt-2 lg:grid xl:gap-5">
+            {cuentosEscritorio.map((cuento) => <Portada key={cuento.titulo} cuento={cuento} />)}
+          </div>
+
+          {/* Móvil: el gesto horizontal se conserva, pero la barra nativa no se muestra. */}
+          <div ref={carrusel} className="flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-5 px-1 pb-3 pt-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:hidden">
             {cuentos.map((cuento) => (
-              <article key={cuento.titulo} className="group relative w-[148px] shrink-0 snap-start overflow-hidden rounded-[1.15rem] border border-pergamino-50/10 bg-tinta-800 shadow-[0_14px_30px_rgba(0,0,0,0.25)] transition duration-300 hover:-translate-y-2 hover:border-oro-300/40 hover:shadow-[0_20px_40px_rgba(0,0,0,0.36)] sm:w-[174px] lg:w-[188px]">
-                <div className="relative aspect-[2/3] overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`${cuento.imagen}?v=${VERSION_PORTADAS}`}
-                    alt={`Portada de ${cuento.titulo}`}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-tinta-950 via-tinta-950/25 to-transparent" />
-                  <span className="absolute left-3 top-3 rounded-full bg-tinta-950/70 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-oro-300 backdrop-blur">{cuento.tono}</span>
-                </div>
-                <div className="min-h-[82px] border-t border-pergamino-50/10 px-3.5 py-3">
-                  <h3 className="line-clamp-2 font-display text-[17px] italic leading-[1.02] text-pergamino-50">{cuento.titulo}</h3>
-                  <p className="mt-2 font-mono text-[9px] uppercase tracking-[0.08em] text-pergamino-50/55">◷ {cuento.minutos} · 2–7 años</p>
-                </div>
-              </article>
+              <div key={cuento.titulo} className="w-[148px] shrink-0 snap-start sm:w-[174px]">
+                <Portada cuento={cuento} />
+              </div>
             ))}
           </div>
-          <div aria-hidden className="absolute inset-x-1 bottom-[15px] h-px bg-gradient-to-r from-transparent via-oro-500/45 to-transparent" />
           <button
             type="button"
-            onClick={() => desplazar(1)}
+            onClick={() => cambiarPagina(1)}
             aria-label="Ver más portadas"
-            className="absolute -right-3 top-1/2 z-10 hidden h-10 w-10 -translate-y-1/2 rounded-full border border-pergamino-50/15 bg-tinta-950/80 text-xl text-pergamino-50 shadow-lg backdrop-blur transition hover:bg-ciruela-500 lg:grid lg:place-items-center"
+            className="absolute -right-5 top-[42%] z-10 hidden h-11 w-11 -translate-y-1/2 rounded-full border border-pergamino-50/20 bg-tinta-900 text-2xl text-pergamino-50 shadow-[0_10px_28px_rgba(0,0,0,0.34)] transition hover:scale-105 hover:border-oro-300/60 hover:text-oro-300 lg:grid lg:place-items-center"
           >
             ›
           </button>
+          <div className="mt-7 hidden items-center justify-center gap-2 lg:flex" aria-label="Indicador de portadas">
+            {Array.from({ length: Math.max(1, Math.ceil(cuentos.length / 6)) }).map((_, indice) => (
+              <span key={indice} className={`h-1.5 rounded-full transition-all ${Math.floor(inicio / 6) === indice ? "w-7 bg-oro-300" : "w-1.5 bg-pergamino-50/25"}`} />
+            ))}
+          </div>
         </div>
 
         <p className="mt-2 text-center font-mono text-[11px] uppercase tracking-[0.1em] text-pergamino-50/45">
