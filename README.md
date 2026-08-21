@@ -108,6 +108,11 @@ El checkout usa `/api/checkout/mercadopago?plan=mensual` o
 `?plan=semestral`. El webhook valida la firma, vuelve a consultar la
 preaprobación en Mercado Pago y solo después cambia `families.plan`.
 
+Mercado Pago regresa a `/checkout/mercadopago/retorno`, una URL sin query
+propia para que pueda anexar `preapproval_id` correctamente. Esa pantalla
+consulta el estado cada dos segundos y redirige automáticamente a `/dashboard`
+cuando el webhook termina de activar la suscripción.
+
 Si una suscripción se cancela, no se corta el acceso inmediatamente. El
 webhook conserva `fecha_renovacion` y la familia puede seguir entrando hasta
 el final del periodo ya pagado. Después de esa fecha, dashboard, lector y

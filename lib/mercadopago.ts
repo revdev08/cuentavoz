@@ -107,7 +107,9 @@ export async function crearSuscripcion({
         transaction_amount: plan.monto,
         currency_id: "COP",
       },
-      back_url: `${appUrl}/planes?checkout=pendiente`,
+      // Debe ser una URL sin query: Mercado Pago agrega sus propios
+      // parámetros de retorno empezando por "?".
+      back_url: `${appUrl}/checkout/mercadopago/retorno`,
       status: "pending",
     }),
   });

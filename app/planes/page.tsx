@@ -5,6 +5,7 @@ import { SeccionPrecios } from "@/components/SeccionPrecios";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { emailPuedeUsarPlanDesarrollador } from "@/lib/mercadopago";
 import { tieneAccesoPremium } from "@/lib/suscripciones/acceso";
+import { ConfirmacionPago } from "@/components/ConfirmacionPago";
 
 export default async function PlanesPage({
   searchParams,
@@ -56,11 +57,8 @@ export default async function PlanesPage({
     <div className="min-h-screen bg-pergamino-50 dark:bg-tinta-950">
       <AppHeader />
       <main className="px-4 pb-16">
-        {(searchParams?.checkout === "pendiente" || subscription?.estado === "pending") && (
-          <div className="mx-auto mt-6 max-w-2xl rounded-2xl border border-oro-400/40 bg-oro-100 px-5 py-4 text-center text-sm text-tinta-900 dark:bg-oro-500/10 dark:text-pergamino-50">
-            Mercado Pago está confirmando tu suscripción. Cuando sea autorizada,
-            tendrás acceso al dashboard. Recarga esta página en unos segundos.
-          </div>
+        {(searchParams?.checkout?.startsWith("pendiente") || subscription?.estado === "pending") && (
+          <ConfirmacionPago />
         )}
         <SeccionPrecios mostrarDesarrollador={mostrarDesarrollador} />
       </main>
