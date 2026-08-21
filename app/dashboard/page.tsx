@@ -133,7 +133,7 @@ export default async function DashboardPage() {
         {/* Barra superior solo en móvil -- en desktop esta info ya vive en el sidebar */}
         <div className="mb-6 flex items-center justify-between md:hidden">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <CuentavozLogo size={32} />
+            <CuentavozLogo size={42} />
             <span className="font-display text-lg italic text-tinta-900 dark:text-pergamino-50">
               Cuentavoz
             </span>

@@ -21,10 +21,10 @@ export function AppHeader({
     <header
       className={`${absoluto ? "absolute inset-x-0 top-0 z-30" : "relative"} flex items-center justify-between gap-3 px-6 py-5 sm:px-8`}
     >
-      <Link href={href} className="flex items-center gap-2.5">
-        <CuentavozLogo size={36} />
+      <Link href={href} className="flex items-center gap-3">
+        <CuentavozLogo size={48} className="drop-shadow-[0_8px_14px_rgba(0,0,0,0.22)]" />
         <span
-          className={`font-display text-lg italic ${
+          className={`font-display text-2xl italic leading-none ${
             sobreOscuro ? "text-pergamino-50" : "text-tinta-900 dark:text-pergamino-50"
           }`}
         >

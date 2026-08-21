@@ -9,32 +9,39 @@ export function CuentavozLogo({
     <svg
       width={size}
       height={size}
-      viewBox="0 0 64 64"
+      viewBox="0 0 100 100"
       fill="none"
       className={className}
       aria-hidden="true"
     >
       <defs>
-        <linearGradient id="cuentavozLogoBg" x1="8" y1="6" x2="57" y2="60" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#8A6BAE" />
-          <stop offset="1" stopColor="#4C7A63" />
+        <linearGradient id="cuentavozLogoBg" x1="12" y1="8" x2="86" y2="94" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#17152B" />
+          <stop offset="0.55" stopColor="#302253" />
+          <stop offset="1" stopColor="#3A5F4C" />
         </linearGradient>
-        <linearGradient id="cuentavozLogoPage" x1="18" y1="31" x2="47" y2="53" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FFF8E8" />
-          <stop offset="1" stopColor="#F0C078" />
+        <linearGradient id="cuentavozLogoFox" x1="32" y1="30" x2="67" y2="70" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#F7BF68" />
+          <stop offset="1" stopColor="#B85F36" />
         </linearGradient>
+        <linearGradient id="cuentavozLogoPage" x1="18" y1="65" x2="81" y2="88" gradientUnits="userSpaceOnUse"><stop stopColor="#FFF8E8" /><stop offset="1" stopColor="#E9B253" /></linearGradient>
+        <filter id="cuentavozLogoGlow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="blur" /><feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
       </defs>
-      <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#cuentavozLogoBg)" />
-      <path d="M10 18C14 13 19 10 26 9" stroke="#F0C078" strokeWidth="1.5" strokeLinecap="round" opacity=".7" />
-      <path d="M37 9C45 10 51 15 54 22" stroke="#F0C078" strokeWidth="1.5" strokeLinecap="round" opacity=".7" />
-      <path d="M19 34.5C23.8 31.1 28.3 31.3 32 35.5V49C28.2 45.4 23.8 45.3 19 48.5V34.5Z" fill="url(#cuentavozLogoPage)" />
-      <path d="M45 34.5C40.2 31.1 35.7 31.3 32 35.5V49C35.8 45.4 40.2 45.3 45 48.5V34.5Z" fill="url(#cuentavozLogoPage)" />
-      <path d="M22.5 37.5C25.3 35.7 27.8 35.7 30 37.5M41.5 37.5C38.7 35.7 36.2 35.7 34 37.5" stroke="#8A6BAE" strokeWidth="1.2" strokeLinecap="round" opacity=".75" />
-      <circle cx="32" cy="23" r="4.3" fill="#FFF8E8" />
-      <path d="M32 18.7V16M36.3 20.8L38.4 19.2M27.7 20.8L25.6 19.2" stroke="#F0C078" strokeWidth="1.7" strokeLinecap="round" />
-      <path d="M24.8 26.2C21.1 28.6 21.1 33 24.8 35.4M39.2 26.2C42.9 28.6 42.9 33 39.2 35.4" stroke="#FFF8E8" strokeWidth="2" strokeLinecap="round" />
-      <path d="M20 23.2C14.7 26.8 14.7 34.8 20 38.3M44 23.2C49.3 26.8 49.3 34.8 44 38.3" stroke="#F0C078" strokeWidth="1.5" strokeLinecap="round" opacity=".8" />
-      <path d="M51 12.5L52.1 15.1L54.7 16.2L52.1 17.3L51 19.9L49.9 17.3L47.3 16.2L49.9 15.1L51 12.5Z" fill="#FFF8E8" />
+      <rect x="4" y="4" width="92" height="92" rx="30" fill="url(#cuentavozLogoBg)" />
+      <rect x="6.5" y="6.5" width="87" height="87" rx="27.5" stroke="#F0C078" strokeOpacity=".32" strokeWidth="2" />
+      <circle cx="50" cy="48" r="30" fill="#8A6BAE" opacity=".14" filter="url(#cuentavozLogoGlow)" />
+      <path d="M27 60C33 54 42 54 50 61C58 54 67 54 73 60V80C65 74 57 74 50 81C43 74 35 74 27 80V60Z" fill="url(#cuentavozLogoPage)" />
+      <path d="M50 61V81M32 62C38 59 44 60 48 64M68 62C62 59 56 60 52 64" stroke="#AA6A4C" strokeWidth="1.8" strokeLinecap="round" opacity=".65" />
+      <path d="M30 49L35 29L45 39M70 49L65 29L55 39" fill="#B85F36" />
+      <path d="M33.5 42L36 34L41 40M66.5 42L64 34L59 40" fill="#F7D69D" />
+      <path d="M31 48C31 35 39 27 50 27C61 27 69 35 69 48C69 61 61 69 50 69C39 69 31 61 31 48Z" fill="url(#cuentavozLogoFox)" />
+      <path d="M38 57C41.5 67 58.5 67 62 57C58 53 54 52 50 55C46 52 42 53 38 57Z" fill="#FFF2D7" />
+      <ellipse cx="43.5" cy="47.5" rx="3.4" ry="3.8" fill="#17152B" /><ellipse cx="56.5" cy="47.5" rx="3.4" ry="3.8" fill="#17152B" />
+      <circle cx="44.6" cy="46.3" r="1" fill="#FFF8E8" /><circle cx="57.6" cy="46.3" r="1" fill="#FFF8E8" />
+      <path d="M50 55.5C52.4 55.5 52.2 58.8 50 58.8C47.8 58.8 47.6 55.5 50 55.5Z" fill="#17152B" />
+      <g fill="none" strokeLinecap="round"><path d="M25 46C17 51 17 61 25 66" stroke="#8FB4A0" strokeWidth="4" /><path d="M18 42C7 50 7 63 18 71" stroke="#B9D1C4" strokeWidth="2.6" opacity=".9" /><path d="M75 46C83 51 83 61 75 66" stroke="#8FB4A0" strokeWidth="4" /><path d="M82 42C93 50 93 63 82 71" stroke="#B9D1C4" strokeWidth="2.6" opacity=".9" /></g>
+      <path d="M75 16L77.2 21.1L82.3 23.3L77.2 25.5L75 30.6L72.8 25.5L67.7 23.3L72.8 21.1L75 16Z" fill="#F0C078" filter="url(#cuentavozLogoGlow)" />
+      <circle cx="25" cy="23" r="2.2" fill="#F0C078" />
     </svg>
   );
 }
