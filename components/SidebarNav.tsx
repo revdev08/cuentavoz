@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { Medallon } from "@/components/Medallon";
+import { CuentavozLogo } from "@/components/CuentavozLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const ITEMS = [
@@ -22,7 +22,7 @@ export function SidebarNav({ nombreFamilia }: { nombreFamilia: string }) {
   return (
     <aside className="sticky top-0 hidden h-[100dvh] w-[248px] shrink-0 flex-col overflow-y-auto border-r border-[#D8C6A8]/55 bg-[#F7EEDC] px-5 py-7 shadow-[12px_0_40px_rgba(76,50,30,0.04)] dark:border-white/5 dark:bg-[#0B0A17] md:flex">
       <Link href="/dashboard" className="flex items-center gap-3 rounded-2xl px-2 py-1 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-oro-300/30">
-        <Medallon size={42} />
+        <CuentavozLogo size={42} />
         <div>
           <p className="font-display text-xl italic leading-tight text-tinta-900 dark:text-pergamino-50">
             Cuentavoz

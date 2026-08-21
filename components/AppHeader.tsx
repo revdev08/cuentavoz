@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Medallon } from "@/components/Medallon";
+import { CuentavozLogo } from "@/components/CuentavozLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function AppHeader({
@@ -22,7 +22,7 @@ export function AppHeader({
       className={`${absoluto ? "absolute inset-x-0 top-0 z-30" : "relative"} flex items-center justify-between gap-3 px-6 py-5 sm:px-8`}
     >
       <Link href={href} className="flex items-center gap-2.5">
-        <Medallon size={36} animado />
+        <CuentavozLogo size={36} />
         <span
           className={`font-display text-lg italic ${
             sobreOscuro ? "text-pergamino-50" : "text-tinta-900 dark:text-pergamino-50"

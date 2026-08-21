@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   title: "Cuentavoz",
   description:
     "Cuentos para leer en voz alta con tu hijo, con sonidos que cobran vida y personajes que ustedes crean juntos.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
