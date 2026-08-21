@@ -20,7 +20,11 @@ export default clerkMiddleware((auth, req) => {
 
 export const config = {
   matcher: [
-    "/((?!_next|.*\\.(?:ico|png|jpg|jpeg|svg|css|js|mp3|json)$).*)",
+    // Los recursos de `public` no deben pasar por Clerk. En particular, las
+    // portadas nuevas se sirven como WebP; si se omite esa extensión Clerk
+    // responde con una redirección de autenticación y el navegador no puede
+    // dibujarlas dentro de un <img>.
+    "/((?!_next|.*\\.(?:ico|png|jpg|jpeg|gif|webp|avif|svg|css|js|mp3|wav|ogg|json|webmanifest|woff2?)$).*)",
     "/(api|trpc)(.*)",
   ],
 };
