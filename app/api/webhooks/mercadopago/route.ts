@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
-import { esPlanKey, obtenerSuscripcion, PLANES } from "@/lib/mercadopago";
+import { esPlanKey, obtenerPagoAutorizado, obtenerSuscripcion, PLANES } from "@/lib/mercadopago";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import { periodoSigueVigente } from "@/lib/suscripciones/acceso";
 
@@ -47,12 +47,21 @@ export async function POST(req: Request) {
     if (!firmaValida(req, dataId)) return new NextResponse("Firma inválida", { status: 401 });
 
     const type = url.searchParams.get("type") ?? body.type;
-    if (type !== "subscription_preapproval") {
+    if (!["subscription_preapproval", "subscription_authorized_payment"].includes(type ?? "")) {
       return NextResponse.json({ ok: true, ignorado: true });
     }
 
+    let preapprovalId = dataId;
+    let pagoAprobado = false;
+    if (type === "subscription_authorized_payment") {
+      const factura = await obtenerPagoAutorizado(dataId);
+      pagoAprobado = factura.status === "approved" || factura.payment?.status === "approved";
+      if (!pagoAprobado) return NextResponse.json({ ok: true, estado: "pago_no_aprobado" });
+      preapprovalId = factura.preapproval_id;
+    }
+
     // La firma valida el aviso; esta consulta autenticada valida el estado real.
-    const mpSubscription = await obtenerSuscripcion(dataId);
+    const mpSubscription = await obtenerSuscripcion(preapprovalId);
     const [familyId, clerkUserId, plan] = (mpSubscription.external_reference ?? "").split(":");
     if (!familyId || !clerkUserId || !esPlanKey(plan)) {
       return new NextResponse("Referencia externa inválida", { status: 400 });
@@ -81,7 +90,7 @@ export async function POST(req: Request) {
 
     const { data: existingSubscription, error: existingError } = await supabase
       .from("subscriptions")
-      .select("fecha_renovacion")
+      .select("estado, fecha_renovacion")
       .eq("family_id", familyId)
       .eq("proveedor", "mercadopago")
       .maybeSingle();
@@ -90,12 +99,19 @@ export async function POST(req: Request) {
     // Mercado Pago puede omitir next_payment_date al cancelar. En ese caso
     // conservamos el fin del periodo que ya habíamos registrado.
     const fechaFin = mpSubscription.next_payment_date ?? existingSubscription?.fecha_renovacion ?? null;
+    const estadoConsultado = pagoAprobado ? "authorized" : mpSubscription.status;
+    // Los webhooks pueden llegar fuera de orden. Un pending tardío nunca debe
+    // degradar un pago que ya fue confirmado como authorized.
+    const estadoEfectivo =
+      existingSubscription?.estado === "authorized" && estadoConsultado === "pending"
+        ? "authorized"
+        : estadoConsultado;
 
     const { error: subscriptionError } = await supabase.from("subscriptions").upsert(
       {
         family_id: familyId,
         proveedor: "mercadopago",
-        estado: mpSubscription.status,
+        estado: estadoEfectivo,
         plan,
         mp_preapproval_id: mpSubscription.id,
         fecha_renovacion: fechaFin,
@@ -105,10 +121,10 @@ export async function POST(req: Request) {
     );
     if (subscriptionError) throw subscriptionError;
 
-    if (mpSubscription.status === "authorized") {
+    if (estadoEfectivo === "authorized") {
       const { error } = await supabase.from("families").update({ plan: "premium" }).eq("id", familyId);
       if (error) throw error;
-    } else if (["cancelled", "canceled"].includes(mpSubscription.status)) {
+    } else if (["cancelled", "canceled"].includes(estadoEfectivo)) {
       const planFinal = periodoSigueVigente(fechaFin) ? "premium" : "inactive";
       const { error } = await supabase.from("families").update({ plan: planFinal }).eq("id", familyId);
       if (error) throw error;

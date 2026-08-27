@@ -36,6 +36,13 @@ export type MpPreapproval = {
   };
 };
 
+export type MpAuthorizedPayment = {
+  id: number;
+  preapproval_id: string;
+  status?: string;
+  payment?: { id?: number; status?: string; status_detail?: string };
+};
+
 export function getMpToken() {
   return process.env.MELI_ACCESS_TOKEN?.trim();
 }
@@ -123,4 +130,18 @@ export async function crearSuscripcion({
 
 export function obtenerSuscripcion(id: string) {
   return mpRequest<MpPreapproval>(`/preapproval/${encodeURIComponent(id)}`);
+}
+
+export function obtenerPagoAutorizado(id: string) {
+  return mpRequest<MpAuthorizedPayment>(`/authorized_payments/${encodeURIComponent(id)}`);
+}
+
+export async function existePagoAprobado(preapprovalId: string) {
+  const query = new URLSearchParams({ preapproval_id: preapprovalId });
+  const response = await mpRequest<{ results?: MpAuthorizedPayment[] }>(
+    `/authorized_payments/search?${query.toString()}`
+  );
+  return (response.results ?? []).some(
+    (item) => item.status === "approved" || item.payment?.status === "approved"
+  );
 }

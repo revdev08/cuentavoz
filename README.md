@@ -101,8 +101,9 @@ confirme el estado `authorized`.
    `NEXT_PUBLIC_APP_URL` en `.env.local`.
 3. En Mercado Pago -> Tus integraciones -> Webhooks, registra
    `https://www.cuentavoz.com/api/webhooks/mercadopago`.
-4. Activa el evento `subscription_preapproval`. Mercado Pago también
-   recomienda activar `payments` para seguir los cobros recurrentes.
+4. Activa obligatoriamente `subscription_preapproval` y
+   `subscription_authorized_payment`. Activa también `payments` para seguir
+   los cobros recurrentes.
 
 El checkout usa `/api/checkout/mercadopago?plan=mensual` o
 `?plan=semestral`. El webhook valida la firma, vuelve a consultar la
