@@ -28,9 +28,12 @@ export const metadata: Metadata = {
   description:
     "Cuentos para leer en voz alta con tu hijo, con sonidos que cobran vida y personajes que ustedes crean juntos.",
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: [
+      { url: "/favicon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon.svg", type: "image/svg+xml", sizes: "any" },
+    ],
+    shortcut: "/favicon-192.png",
+    apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.json",
   appleWebApp: {
