@@ -556,7 +556,7 @@ export function StoryPlayer({
                   )
               )}
             </p>
-            <div className="mt-3 flex items-center justify-between text-xs italic text-oro-300/80">
+            <div className="mt-3 flex items-center justify-between text-xs italic text-oro-300/80 cursor-pointer">
               {indice > 0 ? (
                 <button
                   type="button"
