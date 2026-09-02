@@ -2,7 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Nunito, IBM_Plex_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { esMX } from "@clerk/localizations";
+import Script from "next/script";
 import "./globals.css";
+
+const GOOGLE_ANALYTICS_ID = process.env.NEXT_PUBLIC_GA_ID ?? "G-MENPSZVLRT";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -84,6 +87,16 @@ export default function RootLayout({
           <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
         </head>
         <body className="min-h-screen bg-pergamino-50 font-body text-tinta-900 antialiased transition-colors dark:bg-tinta-950 dark:text-pergamino-50">
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GOOGLE_ANALYTICS_ID}');`}
+          </Script>
           {children}
         </body>
       </html>
