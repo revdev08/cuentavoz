@@ -58,7 +58,9 @@ export function useNarracionAutomatica({
     idLocucion.current = id;
     const locucion = new SpeechSynthesisUtterance(texto);
     locucion.lang = "es-CO";
-    locucion.rate = 0.94;
+    // Una lectura para 2–7 años necesita espacio para imaginar la escena;
+    // 0.8 suena conversacional en las voces españolas del navegador.
+    locucion.rate = 0.8;
     locucion.pitch = 1;
 
     const voces = window.speechSynthesis.getVoices();
@@ -94,7 +96,7 @@ export function useNarracionAutomatica({
       if (temporizador.current) clearTimeout(temporizador.current);
       temporizador.current = setTimeout(() => {
         if (id === idLocucion.current) callbacks.current.alTerminar();
-      }, 850);
+      }, 1400);
     };
     locucion.onerror = () => {
       if (id === idLocucion.current) setReproduciendo(false);
