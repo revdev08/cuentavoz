@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSupabaseClient } from "@/lib/supabase/client";
 import { useBlockAudio } from "@/lib/audio/useBlockAudio";
+import { useNarracionAutomatica } from "@/lib/audio/useNarracionAutomatica";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { EsquinaDoblada, estiloDoblez } from "@/components/EsquinaDoblada";
 import { articuloPara, articuloDefinidoPara } from "@/lib/texto/genero";
@@ -199,6 +200,7 @@ export function StoryPlayer({
   // Por defecto el disparador es la voz: el padre lee la palabra en voz
   // alta y ahí suena, en vez de sonar apenas aparece el bloque.
   const [modoEscucha, setModoEscucha] = useState(true);
+  const [modoReproduccion, setModoReproduccion] = useState<"acompanada" | "automatica">("acompanada");
   const [guardando, setGuardando] = useState(false);
   const [errorGuardado, setErrorGuardado] = useState(false);
 
@@ -209,7 +211,7 @@ export function StoryPlayer({
   const { detectado: sonidoActivo, dispararManual } = useBlockAudio(
     fase === "leyendo" ? bloqueActual?.sonido ?? null : null,
     {
-      modoEscucha,
+      modoEscucha: modoReproduccion === "acompanada" && modoEscucha,
       keywords: bloqueActual?.trigger_keywords ?? [],
     }
   );
@@ -234,6 +236,14 @@ export function StoryPlayer({
     () => (bloqueActual ? sustituirVariables(bloqueActual.texto_bloque, valoresConArticulos) : ""),
     [bloqueActual, valoresConArticulos]
   );
+
+  const narracion = useNarracionAutomatica({
+    habilitada: fase === "leyendo" && modoReproduccion === "automatica",
+    texto: textoActual,
+    palabraConSonido: bloqueActual?.trigger_keywords?.[0] ?? null,
+    alLlegarAlSonido: dispararManual,
+    alTerminar: () => avanzar(),
+  });
 
   function seleccionarProtagonista(id: string) {
     setHijoId(id);
@@ -307,6 +317,16 @@ export function StoryPlayer({
 
   function retroceder() {
     setIndice((i) => Math.max(0, i - 1));
+  }
+
+  function activarModoAutomatico() {
+    setModoEscucha(false);
+    setModoReproduccion("automatica");
+  }
+
+  function activarModoAcompanado() {
+    narracion.pausar();
+    setModoReproduccion("acompanada");
   }
 
   if (bloques.length === 0) {
@@ -465,7 +485,7 @@ export function StoryPlayer({
 
   return (
     <main
-      onClick={avanzar}
+      onClick={modoReproduccion === "acompanada" ? avanzar : undefined}
       className="relative h-[100dvh] w-full overflow-hidden bg-tinta-950 transition-shadow duration-700"
       style={{
         boxShadow: sonidoActivo
@@ -499,27 +519,43 @@ export function StoryPlayer({
         ←
       </Link>
 
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          setModoEscucha((m) => !m);
-        }}
-        aria-label={modoEscucha ? "Apagar modo escucha" : "Activar modo escucha"}
-        title={modoEscucha ? "Escuchando" : "Activar modo escucha"}
-        className={`absolute right-4 top-5 z-20 flex h-11 w-11 items-center justify-center rounded-full border text-lg backdrop-blur transition ${
-          modoEscucha
-            ? "border-esmeralda-400 bg-esmeralda-500/25 text-esmeralda-200"
-            : "border-pergamino-50/25 bg-tinta-950/50 text-pergamino-50 hover:bg-tinta-950/75"
-        }`}
-      >
-        <span className={modoEscucha && !sonidoActivo ? "animar-pulso" : ""}>🎙️</span>
-      </button>
+      <div className="absolute right-4 top-5 z-20 flex items-center rounded-full border border-pergamino-50/20 bg-tinta-950/60 p-1 shadow-lg backdrop-blur">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            activarModoAcompanado();
+          }}
+          aria-pressed={modoReproduccion === "acompanada"}
+          title="Lectura acompañada"
+          className={`flex h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold transition ${
+            modoReproduccion === "acompanada" ? "bg-esmeralda-500/30 text-esmeralda-100" : "text-pergamino-50/65 hover:text-pergamino-50"
+          }`}
+        >
+          <span className={modoEscucha && !sonidoActivo ? "animar-pulso" : ""}>🎙️</span>
+          <span className="hidden sm:inline">Leer</span>
+        </button>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            activarModoAutomatico();
+            narracion.iniciar();
+          }}
+          aria-pressed={modoReproduccion === "automatica"}
+          title="Narración automática"
+          className={`flex h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold transition ${
+            modoReproduccion === "automatica" ? "bg-oro-400 text-tinta-950" : "text-pergamino-50/65 hover:text-pergamino-50"
+          }`}
+        >
+          <span>🔊</span><span className="hidden sm:inline">Escuchar</span>
+        </button>
+      </div>
 
       <span className="pointer-events-none absolute right-5 top-20 z-20 font-display text-xs italic tracking-wide text-pergamino-50/70">
         {romanizar(indice + 1)} de {romanizar(bloques.length)}
       </span>
-      {modoEscucha && bloqueActual?.sonido && !sonidoActivo && (
+      {modoReproduccion === "acompanada" && modoEscucha && bloqueActual?.sonido && !sonidoActivo && (
         <span className="pointer-events-none absolute right-5 top-[86px] z-20 text-[11px] font-medium text-esmeralda-300/80">
           escuchando...
         </span>
@@ -571,7 +607,24 @@ export function StoryPlayer({
               ) : (
                 <span />
               )}
-              <p>toca para continuar ›</p>
+              {modoReproduccion === "automatica" ? (
+                narracion.soportada ? (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      narracion.reproduciendo ? narracion.pausar() : narracion.iniciar();
+                    }}
+                    className="rounded px-1 py-0.5 font-sans not-italic font-semibold text-oro-300 transition hover:text-oro-200"
+                  >
+                    {narracion.reproduciendo ? "❚❚ Pausar" : "▶ Escuchar esta página"}
+                  </button>
+                ) : (
+                  <span className="font-sans not-italic text-pergamino-50/60">La narración no está disponible en este navegador.</span>
+                )
+              ) : (
+                <p>toca para continuar ›</p>
+              )}
             </div>
           </div>
         </div>
