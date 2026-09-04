@@ -60,7 +60,7 @@ export function useNarracionAutomatica({
     locucion.lang = "es-CO";
     // Una lectura para 2–7 años necesita espacio para imaginar la escena;
     // 0.8 suena conversacional en las voces españolas del navegador.
-    locucion.rate = 0.8;
+    locucion.rate = 0.7;
     locucion.pitch = 1;
 
     const voces = window.speechSynthesis.getVoices();
